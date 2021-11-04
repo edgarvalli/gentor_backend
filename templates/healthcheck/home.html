@@ -1,0 +1,18 @@
+{% extends 'healthcheck/layout.html' %} {% block content %}
+
+<div
+  class="d-flex justify-content-center align-items-center row"
+  style="position: relative; height: 60vh; width: 100%;"
+>
+  <div class="row">
+    <div class="col-12 text-center">
+      Buen Dia {{name}},<br />
+      favor de iniciar el cuestionario.
+    </div>
+    <div class="col-12 mt-5 d-flex justify-content-center align-items-center">
+      <a class="btn btn-gentor" href="/healthcheck/questions/q1">Iniciar</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

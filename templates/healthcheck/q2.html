@@ -1,0 +1,45 @@
+{% extends 'healthcheck/layout.html' %} {% block content %}
+
+<div class="row pt-1 pb-2" style="background: #fff">
+  <div
+    class="col-1"
+    onclick="goBack(this)"
+    style="cursor: pointer"
+  >
+    <img src="/icons/arrow-left.png" alt="arrow-left" />
+  </div>
+  <div class="col">
+    <strong
+      >2. En los últimos 14 días, ¿has tenido algún contacto con alguien con
+      síntomas que sugieran una infección por COVID-19?</strong
+    >
+  </div>
+</div>
+
+<div class="row pt-2 pb-2 answer">
+  <label for="checkbox" class="col-11">Si</label>
+  <div class="col">
+    <div class="round">
+      <input type="checkbox" id="yes" onclick="onChangeQ2('yes')" />
+      <label for="yes"></label>
+    </div>
+  </div>
+</div>
+
+<div class="row pt-2 pb-2 answer">
+  <label for="checkbox" class="col-11">No</label>
+  <div class="col">
+    <div class="round">
+      <input type="checkbox" id="no" onclick="onChangeQ2('no')" />
+      <label for="no"></label>
+    </div>
+  </div>
+</div>
+
+<div class="p-5 d-flex justify-content-center">
+  <button class="btn btn-gentor" onclick="nextQ2()">Siguiente</button>
+</div>
+
+<script src="/js/questions.js"></script>
+
+{% endblock %}

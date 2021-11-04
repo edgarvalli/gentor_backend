@@ -1,0 +1,13 @@
+{% extends 'healthcheck/layout.html' %} {% block content %}
+
+<div class="row pt-1 pb-2" style="background: #fff">
+  <div class="col-1" onclick="goBack(this)" style="cursor: pointer">
+    <img src="/icons/arrow-left.png" alt="arrow-left" />
+  </div>
+  <div class="col">
+    <strong>4.	¿Haz viajado en los últimos 7 días?</strong>
+  </div>
+</div>
+
+<script src="/js/questions.js"></script>
+{% endblock %}
