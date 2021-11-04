@@ -20,6 +20,25 @@ def import_guardata():
 
     return result
 
+@guardata.route("/update/cfdis", methods=["POST","GET"])
+def update_cfdis():
+
+    data = request.get_json()
+    uuids = data.get("data")
+    result = {
+        "error": False,
+        "message": ""
+    }
+
+    for uuid in uuids:
+        model = data.get("model")
+        query = f"UPDATE {model} SET Cancelado=1 WHERE UUID='{uuid}'"
+        r = db.commit(query=query)
+        if r["error"]:
+            result = r
+            break
+
+    return result
 
 @guardata.route("/api/fetch/<model>")
 def fetch(model):

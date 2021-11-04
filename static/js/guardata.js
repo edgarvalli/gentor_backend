@@ -80,11 +80,44 @@ new Vue({
 
       this.message = resp.message || "Importado!!!!";
     },
+    updateCfdis: async function () {
+      const loader = document.getElementById("loader");
+      const cfdisEl = document.getElementById("uuids");
+      const e = document.getElementById("empresa2");
+
+      if (e.value === "") return alert("Debes elegir una empresa");
+
+      loader.style.display = "flex";
+
+      values = {
+        model: e.value,
+        data: cfdisEl.value.trimEnd().split("\n"),
+      };
+
+      try {
+        const request = await fetch("/guardata/update/cfdis", {
+          method: "post",
+          body: JSON.stringify(values),
+          headers: {
+            "Content-Type": "Application/Json",
+            Accept: "Application/Json",
+          },
+        });
+        const response = await request.json();
+        if (response.error) return alert(response.message);
+      } catch (error) {
+        console.log(error);
+      }
+
+      cfdisEl.value = "";
+      e.value = ""
+
+      loader.style.display = "none";
+    },
     fetchInit: async function () {
       const request = await fetch("/guardata/api/fetch/Empresas");
       const response = await request.json();
       this.empresas = response.data;
-      console.log(this.empresas);
     },
   },
 });

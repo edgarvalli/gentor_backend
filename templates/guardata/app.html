@@ -26,58 +26,110 @@
       </div>
     </nav>
 
-    <div
-      class="container mt-4"
-      id="app"
-      style="background: #fff; overflow-x: auto"
-    >
-      <div class="loader" id="loader" style="display: none;">
-        <div>
-          <div class="lds-ripple">
-            <div></div>
-            <div></div>
+    <div id="app">
+      
+      <div class="container mt-4" style="background: #fff; overflow-x: auto">
+        <div class="loader" id="loader" style="display: none">
+          <div>
+            <div class="lds-ripple">
+              <div></div>
+              <div></div>
+            </div>
+            <div>Importando datos....</div>
           </div>
-          <div>Importando datos....</div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-lg-8 col-md-12 mb-3">
+            <label for="file_select" class="form-label">Subir Archivo</label>
+            <input
+              type="file"
+              id="file_select"
+              class="form-control"
+              v-on:change="onChangeFileInput"
+            />
+          </div>
+          <div class="col-lg-4 col-md-12">
+            <label for="empresa" class="form-label"
+              >Selecciona la Empresa</label
+            >
+            <select name="empresa" id="empresa" class="form-control">
+              <option value="" disabled selected></option>
+              <option v-for="e in empresas" :value="e.RFC">
+                {{e.RazonSocial}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <a href="/layouts/layout_guardata.csv" class="col p-3"
+            >Descargar Template</a
+          >
+        </div>
+        <div class="row mt-4 p-4" v-if="importShow">
+          <button
+            class="btn btn-primary"
+            style="width: 8rem"
+            id="button-import"
+            v-on:click="importCfdis"
+          >
+            IMPORT
+          </button>
+        </div>
+        <div class="row mt-4" v-if="message !== ''">
+          <div class="col-12">
+            <strong>Mesanje:</strong>
+          </div>
+          <div class="col-12">{{message}}</div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-lg-8 col-md-12 mb-3">
-          <label for="file_select" class="form-label">Subir Archivo</label>
-          <input
-            type="file"
-            id="file_select"
-            class="form-control"
-            v-on:change="onChangeFileInput"
-          />
+
+      <div
+        class="container mt-4 mb-5"
+        id="app"
+        style="background: #fff; overflow-x: auto"
+      >
+        <div class="row mt-4">
+          <strong>Actualización a Cancelado</strong>
         </div>
-        <div class="col-lg-4 col-md-12">
-          <label for="empresa" class="form-label">Selecciona la Empresa</label>
-          <select name="empresa" id="empresa" class="form-control">
-            <option value="" disabled selected></option>
-            <option v-for="e in empresas" :value="e.RFC">{{e.RazonSocial}}</option>
-          </select>
+
+        <div class="row second-section">
+          <div class="col-12">
+            <label for="empresa2" class="form-label"
+              >Selecciona la Empresa</label
+            >
+            <select name="empresa" id="empresa2" class="form-control">
+              <option value="" disabled selected></option>
+              <option v-for="e in empresas" :value="e.RFC">
+                {{e.RazonSocial}}
+              </option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="row mt-4">
-        <a href="/layouts/layout_guardata.csv" class="col p-3"
-          >Descargar Template</a
-        >
-      </div>
-      <div class="row mt-4 p-4" v-if="importShow">
-        <button
-          class="btn btn-primary"
-          style="width: 8rem"
-          id="button-import"
-          v-on:click="importCfdis"
-        >
-          Importar
-        </button>
-      </div>
-      <div class="row mt-4" v-if="message !== ''">
-        <div class="col-12">
-          <strong>Mesanje:</strong>
+        
+        <div class="row mt-4 second-section">
+          <label for="uuids" class="form-label">Ingresa los UUID</label>
+          <textarea
+          name="data"
+          id="uuids"
+          cols="30"
+          rows="10"
+          class="form-control"
+          ></textarea>
         </div>
-        <div class="col-12">{{message}}</div>
+        
+        
+        <div class="row mt-4 p-4 second-section">
+          <button
+            class="btn btn-primary"
+            style="width: 8rem"
+            id="button-update"
+            v-on:click="updateCfdis"
+            >
+            UPDATE
+          </button>
+        </div>
+       </div>
       </div>
     </div>
   </body>

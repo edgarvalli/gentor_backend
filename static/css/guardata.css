@@ -34,6 +34,19 @@ body {
 .lds-ripple div:nth-child(2) {
   animation-delay: -0.5s;
 }
+
+.second-section {
+  width: 50%;
+  margin: auto;
+}
+
+@media (max-width: 960px) {
+  .second-section {
+    width: 90%;
+    margin: auto;
+  }
+}
+
 @keyframes lds-ripple {
   0% {
     top: 36px;
