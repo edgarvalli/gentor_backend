@@ -1,5 +1,4 @@
 from flask import Blueprint, session, redirect, render_template
-from flask.globals import request
 from auth import _build_auth_code_flow
 import app_config
 

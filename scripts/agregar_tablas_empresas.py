@@ -8,7 +8,7 @@ empresas = db.fetchall("select * from Empresas")
 for e in empresas:
     table = e['RFC']
     query = f"""
-    create table [{table}]
+    CREATE TABLE IF NOT EXISTS [{table}]
         (
             [Version] nvarchar (10) not null,
             [TipoComprobante] nvarchar(40) not null,
@@ -56,4 +56,8 @@ for e in empresas:
             [ExtraNumerico10] float
         )   
     """
-    db.query(query=query)
+
+    db.commit(query=query)
+
+    query_index = f"CREATE INDEX guardata ON {table} (FechaFacturacion,Origen,TipoComprobante)"
+    db.commit(query=query_index)
