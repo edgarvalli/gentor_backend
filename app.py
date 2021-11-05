@@ -55,7 +55,6 @@ def authorized():
         pass  # Simply ignore them
     # return redirect(url_for("index"))
     url = session.get("app_redirect", '/')
-    print(url)
     return redirect(url)
 
 
