@@ -1,6 +1,6 @@
 from flask import Blueprint, send_file, request, session, redirect
 from flask.templating import render_template
-from lib import sql_server as db
+from db import sql_server as db
 from functools import wraps
 from auth import _build_auth_code_flow
 import app_config

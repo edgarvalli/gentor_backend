@@ -1,7 +1,7 @@
 from set_root_path import set_root_path
 set_root_path()
 
-import lib.sql_server as db
+import db.sql_server as db
 
 empresas = db.fetchall("select * from Empresas")
 
