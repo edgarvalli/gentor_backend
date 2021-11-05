@@ -37,6 +37,7 @@ def login():
     # Technically we could use empty list [] as scopes to do just sign in,
     # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
+    print(session)
     return render_template("login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
 
