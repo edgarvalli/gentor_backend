@@ -1,5 +1,3 @@
-import os
-
 CLIENT_ID = "bb080778-1351-4fb6-9eba-c7cee9e66c3f" # Application (client) ID of app registration
 
 CLIENT_SECRET = "Niu7Q~UFyNdlg-bUoFIkLq1FvXXAHNwbqbt_D" # Placeholder - for use ONLY during testing.
