@@ -12,7 +12,7 @@ import app_config
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
-app.config['SERVER_NAME'] = 'app.gentor.com'
+# app.config['SERVER_NAME'] = 'app.gentor.com'
 Session(app)
 
 app.register_blueprint(healthcheck)
@@ -83,4 +83,4 @@ app.jinja_env.globals.update(
     _build_auth_code_flow=_build_auth_code_flow)  # Used in template
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='app.gentor.com', port=5000)
