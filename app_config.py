@@ -11,7 +11,7 @@ CLIENT_SECRET = "Niu7Q~UFyNdlg-bUoFIkLq1FvXXAHNwbqbt_D" # Placeholder - for use 
 AUTHORITY = "https://login.microsoftonline.com/9887265d-1d6b-4d00-a656-4ff5155bc54d"  # For multi-tenant app
 # AUTHORITY = "https://login.microsoftonline.com/Enter_the_Tenant_Name_Here"
 
-REDIRECT_PATH = "https://app.gentor.com/getAToken"  # Used for forming an absolute URL to your redirect URI.
+REDIRECT_PATH = "/getAToken"  # Used for forming an absolute URL to your redirect URI.
                               # The absolute URL must match the redirect URI you set
                               # in the app's registration in the Azure portal.
 
