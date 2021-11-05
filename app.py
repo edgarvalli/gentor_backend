@@ -12,6 +12,7 @@ import app_config
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
+app.config['SERVER_NAME'] = 'app.gentor.com'
 Session(app)
 
 app.register_blueprint(healthcheck)
