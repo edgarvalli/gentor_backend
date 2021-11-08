@@ -15,7 +15,7 @@ app.config.from_object(app_config)
 # app.config['SERVER_NAME'] = 'app.gentor.com'
 Session(app)
 
-app.register_blueprint(healthcheck)
+app.register_blueprint(healthcheck,root_path = app.root_path)
 app.register_blueprint(guardata)
 
 

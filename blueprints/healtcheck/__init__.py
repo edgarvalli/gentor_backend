@@ -1,4 +1,6 @@
 from flask import Blueprint, session, redirect, render_template
+import flask
+from flask.helpers import send_file
 from auth import _build_auth_code_flow
 import app_config
 
@@ -25,5 +27,5 @@ def home():
 
 @healthcheck.route("/questions/<v>")
 def questions(v):
-    t = f'/healthcheck/{v}.html'
+    t = f'healthcheck/{v}.html'
     return render_template(t)

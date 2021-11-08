@@ -21,6 +21,15 @@
   background: rgba(0, 0, 0, .1);
 }
 
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.isotipo {
+  margin-left: 1rem;
+}
+
 .pt-10 {
   padding-top: 4rem;
 }
@@ -58,6 +67,16 @@
 
 .list-expanded {
   height: auto;
+}
+
+.item-expanded {
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.collapsed {
+  height: 0;
+  padding: 0;
 }
 
 .navbar-bg-gentor {
@@ -153,6 +172,10 @@
     .container {
       width: 60%;
       margin: auto;
+    }
+
+    .isotipo {
+      margin-left: 7.5rem;
     }
 
     .btn-next {

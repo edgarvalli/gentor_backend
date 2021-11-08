@@ -1,13 +1,109 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
-
+<link rel="stylesheet" href="/css/checkbox.css" />
 <div class="row pt-1 pb-2" style="background: #fff">
   <div class="col-1" onclick="goBack(this)" style="cursor: pointer">
     <img src="/icons/arrow-left.png" alt="arrow-left" />
   </div>
-  <div class="col">
-    <strong>4.	¿Haz viajado en los últimos 7 días?</strong>
+  <div class="col-11">
+    <strong>4. ¿Haz viajado en los últimos 7 días?</strong>
   </div>
 </div>
 
+<div class="row p-2 answer" onclick="expandedItem('item-expanded-2')">
+  <div class="col-11">Sí o planeo viajar en los siguientes 14 días</div>
+  <div class="col-1">
+    <img src="/icons/arrow-rigth.png" alt="arrow-rigth" />
+  </div>
+</div>
+
+<div class="row item-expanded collapsed" id="item-expanded-2">
+  <div class="col-md-6 col-sm-12">
+    <div class="form-group">
+      <label for="start-date">Fecha de inicio del viaje</label>
+      <input
+        type="date"
+        class="form-control"
+        id="start-date"
+        aria-describedby="emailHelp"
+        placeholder="Fecha de inicio del viaje"
+      />
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <div class="form-group">
+      <label for="end-date">Fecha de fin del viaje</label>
+      <input
+        type="date"
+        class="form-control"
+        id="end-date"
+        aria-describedby="emailHelp"
+        placeholder="Fecha fin del viaje"
+      />
+    </div>
+  </div>
+
+  <div class="col-md-6 col-sm-12">
+    <div class="form-group">
+      <label for="origen">Origen</label>
+      <input
+        type="text"
+        class="form-control"
+        id="origen"
+        aria-describedby="emailHelp"
+        placeholder="Origen"
+      />
+    </div>
+  </div>
+  <div class="col-md-6 col-sm-12">
+    <div class="form-group">
+      <label for="dest">Destino</label>
+      <input
+        type="text"
+        class="form-control"
+        id="dest"
+        aria-describedby="emailHelp"
+        placeholder="Destino"
+      />
+    </div>
+  </div>
+
+  <div class="col-12">
+    <strong>Motivo de viaje</strong>
+  </div>
+
+  <div class="col-12 pl-2">
+    <div class="row" onclick="setChecked('trabajo-2','placer-2')">
+      <div class="col-5">Por Trabajo</div>
+      <div class="col-1">
+        <div class="checkbox" id="trabajo-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 pl-2">
+    <div class="row" onclick="setChecked('placer-2','trabajo-2')">
+      <div class="col-5">Recreativo/por placer</div>
+      <div class="col-1">
+        <div class="checkbox" id="placer-2"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row p-2 answer">
+  <div class="col-11">No</div>
+  <div class="col-1">
+    <div class="round">
+      <input type="checkbox" id="checkbox" />
+      <label for="checkbox"></label>
+    </div>
+  </div>
+</div>
+
+<div class="p-5 d-flex justify-content-center">
+  <a class="btn btn-gentor" href="#">Enviar</a>
+</div>
+
 <script src="/js/questions.js"></script>
+<script src="/js/q4.js"></script>
 {% endblock %}

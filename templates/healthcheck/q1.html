@@ -1,5 +1,5 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
-
+<link rel="stylesheet" href="/css/checkbox.css">
 <div class="row pt-1 pb-2" style="background: #fff">
   <div class="col-1">
     <!-- <img src="/icons/arrow-left.png" alt="arrow-left" /> -->
@@ -13,7 +13,7 @@
 </div>
 <div class="row pt-2 pb-2 answer" id="list-container">
   <div class="col-11">Si</div>
-  <div class="col">
+  <div class="col-1">
     <img src="/icons/arrow-rigth.png" alt="arrow-rigth" />
   </div>
 </div>
@@ -21,7 +21,7 @@
 <div class="row">
   <div class="container list" id="q1_list" style="width: 90%">
     <div class="row">
-      <div class="col">
+      <div class="col-12">
         <strong>Seleccionar todos las que apliquen</strong>
       </div>
     </div>
@@ -30,7 +30,7 @@
 
 <div class="row pt-2 pb-2 answer">
   <label for="checkbox" class="col-11">No</label>
-  <div class="col">
+  <div class="col-1">
     <div class="round">
       <input type="checkbox" id="checkbox" />
       <label for="checkbox"></label>
@@ -43,5 +43,6 @@
 </div>
 
 <script src="/js/questions.js"></script>
+<script src="/js/q1.js"></script>
 
 {% endblock %}
