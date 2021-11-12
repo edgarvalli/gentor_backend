@@ -2,12 +2,12 @@ const answer = {
   code: null,
   questioncode: viewKey,
   question:
-    "En los últimos 14 días, ¿has tenido algún contacto con alguien con síntomas que sugieran una infección por COVID-19?",
+    "En los últimos 14 días, ¿has tenido contacto con alguien con síntomas que sugieran una infección por COVID-19?",
   answer: null,
 };
 function next() {
   if (answer.code === null) return alert("Debe seleccionar una opcion");
-  if (answer.code === "q2_ans2")
+  if (answer.code === "q2_ans1")
     return (window.location.href = "/healthcheck/questions/q3");
 
   const responses = getResponses();
