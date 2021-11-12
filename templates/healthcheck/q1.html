@@ -1,48 +1,34 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
-<link rel="stylesheet" href="/css/checkbox.css">
-<div class="row pt-1 pb-2" style="background: #fff">
-  <div class="col-1">
-    <!-- <img src="/icons/arrow-left.png" alt="arrow-left" /> -->
-  </div>
-  <div class="col">
+<div class="row p-2" style="background: #fff">
+  <div class="col-12" id="question-text">
     <strong
       >1. ¿Haz presentado alguno de los siguientes síntomas en los últimos 14
       días?</strong
     >
   </div>
 </div>
-<div class="row pt-2 pb-2 answer" id="list-container">
-  <div class="col-11">Si</div>
-  <div class="col-1">
-    <img src="/icons/arrow-rigth.png" alt="arrow-rigth" />
-  </div>
-</div>
 
-<div class="row">
-  <div class="container list" id="q1_list" style="width: 90%">
-    <div class="row">
-      <div class="col-12">
-        <strong>Seleccionar todos las que apliquen</strong>
-      </div>
-    </div>
-  </div>
-</div>
+<list-row
+  onclick="selectOption(this,'yes')"
+  id="list-row"
+  list-id="q1_ans1_list"
+  key="q1_ans1"
+>
+  Si
+</list-row>
 
-<div class="row pt-2 pb-2 answer">
-  <label for="checkbox" class="col-11">No</label>
-  <div class="col-1">
-    <div class="round">
-      <input type="checkbox" id="checkbox" />
-      <label for="checkbox"></label>
-    </div>
-  </div>
-</div>
+<div class="container container-option" id="q1_ans1_list"></div>
+
+<radius-row onclick="selectOption(this,'no')" id="no-option" key="q1_ans1"
+  >No</radius-row
+>
 
 <div class="p-5 d-flex justify-content-center">
-  <a class="btn btn-gentor" href="/healthcheck/questions/q2">Siguiente</a>
+  <gentor-button onclick="next()">Siguiente</gentor-button>
 </div>
 
 <script src="/js/questions.js"></script>
+<script src="/js/components.js"></script>
 <script src="/js/q1.js"></script>
 
 {% endblock %}

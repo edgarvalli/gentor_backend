@@ -1,0 +1,33 @@
+@font-face {
+  font-family: "berthold";
+  src: url("/font/Berthold-akzidenz-grotesk-be-regular.ttf");
+}
+@font-face {
+  font-family: "berthold-bold";
+  src: url("/font/Berthold-akzidenz-grotesk-be-bold.ttf");
+  font-weight: bold;
+}
+
+* {
+  font-family: "berthold", sans-serif;
+  --gentor-grey: #404040;
+  --gentor-yellow: #eaab35;
+}
+
+.radius {
+  width: 20px;
+  height: 20px;
+  border: solid 1px var(--gentor-yellow);
+  border-radius: 50%;
+}
+.answer {
+    border-bottom: solid 1px #90a4ae;
+}
+.answer:hover {
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.radius-checked {
+  background: var(--gentor-yellow);
+}

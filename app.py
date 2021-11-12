@@ -1,7 +1,7 @@
 #import uuid
 from werkzeug.middleware.proxy_fix import ProxyFix
 from auth import _build_auth_code_flow, _load_cache, _save_cache, _build_msal_app, _get_token_from_cache
-from blueprints.healtcheck import healthcheck
+from blueprints.healthcheck import healthcheck
 from blueprints.guardata import guardata
 import requests
 from flask import Flask, render_template, session, request, redirect, url_for
@@ -83,4 +83,4 @@ app.jinja_env.globals.update(
     _build_auth_code_flow=_build_auth_code_flow)  # Used in template
 
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)

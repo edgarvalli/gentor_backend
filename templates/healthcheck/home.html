@@ -2,17 +2,23 @@
 
 <div
   class="d-flex justify-content-center align-items-center row"
-  style="position: relative; height: 60vh; width: 100%;"
+  style="position: relative; height: 60vh; width: 100%"
 >
   <div class="row">
     <div class="col-12 text-center">
-      Buen Dia {{name}},<br />
+      Buen día {{name}},<br />
       favor de iniciar el cuestionario.
     </div>
     <div class="col-12 mt-5 d-flex justify-content-center align-items-center">
-      <a class="btn btn-gentor" href="/healthcheck/questions/q1">Iniciar</a>
+      <gentor-button onclick="next()">Siguiente</gentor-button>
     </div>
   </div>
 </div>
 
+<script src="/js/components/gentor-button.js"></script>
+<script>
+  function next() {
+    window.location.href = "/healthcheck/questions/q1";
+  }
+</script>
 {% endblock %}

@@ -7,12 +7,11 @@
     {% include 'healthcheck/navbar.html' %}
 
     <div class="layout">
-        <img src="/img/bg-main.jpeg" alt="bg-main" class="med-layout-bg" />
-        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-        <div class="container pt-10">
-            {% block content %}
-            {% endblock %}
-        </div>
+      <img src="/img/bg-main.jpeg" alt="bg-main" class="med-layout-bg" />
+      <div class="container pt-10" id="container">
+        <input type="hidden" id="view-key" value="{{view}}" />
+        {% block content %} {% endblock %}
+      </div>
     </div>
 
     {% include 'healthcheck/footer.html' %}

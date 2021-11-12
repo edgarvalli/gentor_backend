@@ -1,3 +1,17 @@
+const radius = document.getElementById("no-option");
+const list = document.getElementById("q1_ans1_list");
+const listRow = document.getElementById("list-row");
+const k = "q1";
+let isRendered = false;
+
+const answer = {
+  code: "",
+  questioncode: viewKey,
+  question:
+    "¿Haz presentado alguno de los siguientes síntomas en los últimos 14 días?",
+  answer: "",
+};
+
 const sintomas = [
   {
     code: "q1_ans1_1",
@@ -45,78 +59,86 @@ const sintomas = [
   },
 ];
 
-const answer = {
-  code: "",
-  questionCode: "q1",
-  question:
-    "¿Haz presentado alguno de los siguientes síntomas en los últimos 14 días?",
-  answer: "",
-};
-
-function renderOption(id, text) {
-  const row = document.createElement("div");
-  row.onclick = () => setChecked("check_" + id, text);
-  row.classList.add("row");
-  row.classList.add("answer");
-  row.classList.add("p-2");
-  row.id = id;
-
-  const row2 = document.createElement("div");
-  row2.classList.add("col-11");
-  row2.innerText = text;
-
-  const row3 = document.createElement("div");
-  row3.classList.add("col-1");
-
-  row3.innerHTML = `
-    <div class="checkbox" id="check_${id}"></div>
-    `;
-
-  row.appendChild(row2);
-  row.appendChild(row3);
-
-  list.appendChild(row);
+function renderItems() {
+  if (isRendered) return;
+  let html = "";
+  for (let i in sintomas) {
+    const s = sintomas[i];
+    let checked = "";
+    const isIn = isInResponses(s.code);
+    if (isIn) checked = "checked";
+    html += `<checkbox-row checked="${checked}" onclick="selectChildOption(this)" id="${s.code}">${s.text}</checkbox-row>\n`;
+  }
+  list.innerHTML = html;
+  isRendered = true;
 }
 
-const list = document.getElementById("q1_list");
+function next() {
+  let responses = getResponses();
+  responses = responses[viewKey] || [];
+  const uri = "/healthcheck/questions/q2";
+  if (responses.length < 1) return alert("Debe de seleccionar una opcion");
+  window.location.href = uri;
+}
 
-const setChecked = (id, value) => {
-  const el = document.getElementById(id);
-  el.classList.toggle("checkbox-checked");
-  answer.answer = value;
-  answer.code = id.split("check_")[1];
+function selectNO() {
+  const checked = radius.checked;
+  list.innerHTML = "";
 
-  const responses = JSON.parse(sessionStorage.getItem("responses")) || {};
-
-  if (el.classList.contains("checkbox-checked")) {
-    responses["q1"].push(answer);
+  if (checked) {
+    answer.code = "q1_ans2";
+    answer.answer = "No";
+    setResponses([answer]);
   } else {
-    responses["q1"] = responses["q1"].filter((el) => el.code !== answer.code);
+    setResponses([]);
   }
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
 
-  sessionStorage.setItem("responses", JSON.stringify(responses));
-};
-
-const isInResponses = (id) => {
-  console.log(id);
-};
-
-sintomas.forEach((item) => renderOption(item.code, item.text));
-
-const ans1 = document.getElementById("list-container");
-ans1.onclick = function () {
-  answer.answer = "Si";
-  answer.code = "q1_ans1";
-
-  const responses = JSON.parse(sessionStorage.getItem("responses")) || {};
-
-  if (list.classList.contains("list-expanded")) {
-    list.classList.remove("list-expanded");
-    responses["q1"] = [];
+function selectYES(el) {
+  if (el.open) {
+    answer.code = el.getAttribute("key");
+    answer.answer = el.value;
+    setResponses([answer]);
+    renderItems();
   } else {
-    list.classList.add("list-expanded");
-    responses["q1"] = [answer];
+    isRendered = false;
+    setResponses([]);
+    list.innerHTML = "";
   }
+  radius.clearChecked();
+}
 
-  sessionStorage.setItem("responses", JSON.stringify(responses));
-};
+function selectOption(el, opt) {
+  if (opt === "yes") {
+    selectYES(el);
+  } else {
+    selectNO(el);
+  }
+}
+
+function selectChildOption(el) {
+  let responses = getResponses();
+  responses = responses[viewKey];
+  if (el.checked) {
+    answer.code = el.id;
+    answer.answer = el.textContent;
+    responses.push(answer);
+  } else {
+    responses = responses.filter((r) => r.code !== el.id);
+  }
+  setResponses(responses);
+}
+
+const response1 = isInResponses("q1_ans1");
+const response2 = isInResponses("q1_ans2");
+if (response1) {
+  renderItems();
+  listRow.open = false;
+  listRow.setOpen();
+}
+
+if (response2) {
+  radius.setChecked();
+  selectNO();
+}

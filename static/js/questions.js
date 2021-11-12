@@ -1,23 +1,28 @@
-let checkboxQ2 = null;
+const viewKey = document.getElementById("view-key").getAttribute("value");
 
-
-
-function onChangeQ2(el) {
-  const items = {
-    no: document.getElementById("no"),
-    yes: document.getElementById("yes"),
-  };
-  items.no.checked = false;
-  items.yes.checked = false;
-  items[el].checked = true;
-  checkboxQ2 = el;
+function isInResponses(id) {
+  let responses = JSON.parse(sessionStorage.getItem("responses")) || {};
+  responses = responses[viewKey] || [];
+  responses = responses.filter((item) => item.code === id);
+  if (responses.length > 0) return true;
+  return false;
 }
 
-function nextQ2() {
-  if (checkboxQ2 === null) return alert("Debe seleccionar una opcion");
-  if (checkboxQ2 === "yes")
-    return (window.location.href = "/healthcheck/questions/q3");
-  return (window.location.href = "/healthcheck/questions/q4");
+function getResponses() {
+  let _responses = sessionStorage.getItem("responses");
+  if (_responses === null) {
+    _responses = {};
+  } else {
+    _responses = JSON.parse(_responses);
+  }
+  return _responses;
+}
+
+function setResponses(responses) {
+  let _responses = getResponses();
+  _responses[viewKey] = responses;
+  _responses = JSON.stringify(_responses);
+  sessionStorage.setItem("responses", _responses);
 }
 
 const goBack = () => window.history.back();

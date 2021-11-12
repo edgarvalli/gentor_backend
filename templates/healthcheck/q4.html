@@ -1,7 +1,7 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
 <link rel="stylesheet" href="/css/checkbox.css" />
-<div class="row pt-1 pb-2" style="background: #fff">
-  <div class="col-1" onclick="goBack(this)" style="cursor: pointer">
+<div class="row p-2" style="background: #fff">
+  <div class="col-1 d-flex justify-center align-items-center" onclick="goBack(this)" style="cursor: pointer">
     <img src="/icons/arrow-left.png" alt="arrow-left" />
   </div>
   <div class="col-11">
@@ -9,12 +9,9 @@
   </div>
 </div>
 
-<div class="row p-2 answer" onclick="expandedItem('item-expanded-2')">
-  <div class="col-11">Sí o planeo viajar en los siguientes 14 días</div>
-  <div class="col-1">
-    <img src="/icons/arrow-rigth.png" alt="arrow-rigth" />
-  </div>
-</div>
+<list-row list-id="item-expanded-2" id="q4_ans1" onclick="expandedItem(this)">
+  Sí o planeo viajar en los siguientes 14 días
+</list-row>
 
 <div class="row item-expanded collapsed" id="item-expanded-2">
   <div class="col-md-6 col-sm-12">
@@ -23,7 +20,7 @@
       <input
         type="date"
         class="form-control"
-        id="start-date"
+        id="q4_ans1_1"
         aria-describedby="emailHelp"
         placeholder="Fecha de inicio del viaje"
       />
@@ -35,7 +32,7 @@
       <input
         type="date"
         class="form-control"
-        id="end-date"
+        id="q4_ans1_2"
         aria-describedby="emailHelp"
         placeholder="Fecha fin del viaje"
       />
@@ -48,7 +45,7 @@
       <input
         type="text"
         class="form-control"
-        id="origen"
+        id="q4_ans1_3"
         aria-describedby="emailHelp"
         placeholder="Origen"
       />
@@ -60,7 +57,7 @@
       <input
         type="text"
         class="form-control"
-        id="dest"
+        id="q4_ans1_4"
         aria-describedby="emailHelp"
         placeholder="Destino"
       />
@@ -72,38 +69,31 @@
   </div>
 
   <div class="col-12 pl-2">
-    <div class="row" onclick="setChecked('trabajo-2','placer-2')">
-      <div class="col-5">Por Trabajo</div>
+    <div class="row" onclick="setChecked(this,'q4_ans1_6')" check-id="q4_ans1_5" text-id="q4_ans1_5_text">
+      <div class="col-5" id="q4_ans1_5_text">Por Trabajo</div>
       <div class="col-1">
-        <div class="checkbox" id="trabajo-2"></div>
+        <div class="checkbox" id="q4_ans1_5"></div>
       </div>
     </div>
   </div>
 
   <div class="col-12 pl-2">
-    <div class="row" onclick="setChecked('placer-2','trabajo-2')">
-      <div class="col-5">Recreativo/por placer</div>
+    <div class="row" onclick="setChecked(this,'q4_ans1_5')" check-id="q4_ans1_6" text-id="q4_ans1_6_text">
+      <div class="col-5" id="q4_ans1_6_text">Recreativo/por placer</div>
       <div class="col-1">
-        <div class="checkbox" id="placer-2"></div>
+        <div class="checkbox" id="q4_ans1_6"></div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row p-2 answer">
-  <div class="col-11">No</div>
-  <div class="col-1">
-    <div class="round">
-      <input type="checkbox" id="checkbox" />
-      <label for="checkbox"></label>
-    </div>
-  </div>
-</div>
+<radius-row onclick="selectNO(this)" id="q4_ans2">No</radius-row>
 
 <div class="p-5 d-flex justify-content-center">
-  <a class="btn btn-gentor" href="#">Enviar</a>
+  <gentor-button onclick="sendData()">Enviar</gentor-button>
 </div>
 
 <script src="/js/questions.js"></script>
+<script src="/js/components.js"></script>
 <script src="/js/q4.js"></script>
 {% endblock %}
