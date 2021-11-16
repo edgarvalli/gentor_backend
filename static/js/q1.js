@@ -8,7 +8,7 @@ const answer = {
   code: "",
   questioncode: viewKey,
   question:
-    "¿Haz presentado alguno de los siguientes síntomas en los últimos 14 días?",
+    "¿Has presentado alguno de los siguientes síntomas en los últimos 14 días?",
   answer: "",
 };
 
