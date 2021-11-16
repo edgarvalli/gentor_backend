@@ -32,7 +32,7 @@ class RadiusRow extends HTMLElement {
 
   render = async () => {
     //Clases de elementos
-    const containerClass = ["row", "pt-2", "pb-2", "answer"];
+    const containerClass = ["row", "p-2", "answer"];
     const radiusClass = ["radius"];
 
     if (this.getAttribute("checked") === "checked" || this.checked) {

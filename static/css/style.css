@@ -136,9 +136,48 @@
   background: var(--gentor-yellow);
 }
 
+.footer {
+  background: var(--gentor-grey);
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.container-footer {
+  width: 100%;
+  margin: auto;
+}
+
+.row-icon {
+  width: 40%;
+}
+
+@media (min-width: 650px) {
+  .container-footer {
+    width: 42%;
+    margin: auto;
+  }
+
+  .row-icon {
+    width: 20%;
+  }
+}
+
 @media (min-width: 768px) {
   .isotipo {
     margin-left: 3.5rem;
+  }
+
+  .row-icon {
+    width: 5%;
+  }
+
+  .footer {
+    padding: 3rem;
+  }
+
+  .container-footer {
+    width: 90%;
+    margin: auto;
   }
 }
 
@@ -150,10 +189,6 @@
 
   .container-option {
     width: 100%;
-  }
-
-  .container-footer {
-    width: 100vw;
   }
 
   .isotipo {

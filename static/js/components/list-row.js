@@ -32,7 +32,7 @@ class ListRow extends HTMLElement {
   }
 
   render() {
-    const containerClass = ["row", "pt-2", "pb-2", "answer"];
+    const containerClass = ["row", "p-2", "answer"];
     this.listContainer = renderElement("div");
     this.header = renderElement("div", containerClass);
     this.list = renderElement("div", ["container"]);

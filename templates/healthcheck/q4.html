@@ -1,13 +1,7 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
 <link rel="stylesheet" href="/css/checkbox.css" />
-<div class="row p-2" style="background: #fff">
-  <div class="col-1 d-flex justify-center align-items-center" onclick="goBack(this)" style="cursor: pointer">
-    <img src="/icons/arrow-left.png" alt="arrow-left" />
-  </div>
-  <div class="col-11">
-    <strong>4. ¿Has viajado en los últimos 7 días?</strong>
-  </div>
-</div>
+
+<head-title show-back="show">4. ¿Has viajado en los últimos 7 días?</head-title>
 
 <list-row list-id="item-expanded-2" id="q4_ans1" onclick="expandedItem(this)">
   Sí o planeo viajar en los siguientes 14 días
@@ -69,7 +63,12 @@
   </div>
 
   <div class="col-12 pl-2">
-    <div class="row" onclick="setChecked(this,'q4_ans1_6')" check-id="q4_ans1_5" text-id="q4_ans1_5_text">
+    <div
+      class="row"
+      onclick="setChecked(this,'q4_ans1_6')"
+      check-id="q4_ans1_5"
+      text-id="q4_ans1_5_text"
+    >
       <div class="col-5" id="q4_ans1_5_text">Por Trabajo</div>
       <div class="col-1">
         <div class="checkbox" id="q4_ans1_5"></div>
@@ -78,7 +77,12 @@
   </div>
 
   <div class="col-12 pl-2">
-    <div class="row" onclick="setChecked(this,'q4_ans1_5')" check-id="q4_ans1_6" text-id="q4_ans1_6_text">
+    <div
+      class="row"
+      onclick="setChecked(this,'q4_ans1_5')"
+      check-id="q4_ans1_6"
+      text-id="q4_ans1_6_text"
+    >
       <div class="col-5" id="q4_ans1_6_text">Recreativo/por placer</div>
       <div class="col-1">
         <div class="checkbox" id="q4_ans1_6"></div>
@@ -93,7 +97,7 @@
   <gentor-button onclick="sendData()">Enviar</gentor-button>
 </div>
 
-<script src="/js/questions.js"></script>
-<script src="/js/components.js"></script>
+<script src="/js/questions.js?t=<?=time()?>" type="text/javascript"></script>
+<script src="/js/components.js?t=<?=time()?>" type="text/javascript"></script>
 <script src="/js/q4.js"></script>
 {% endblock %}

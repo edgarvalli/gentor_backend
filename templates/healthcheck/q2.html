@@ -1,16 +1,9 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
 
-<div class="row p-2" style="background: #fff">
-  <div class="col-1 d-flex justify-center align-items-center" onclick="goBack(this)" style="cursor: pointer">
-    <img src="/icons/arrow-left.png" alt="arrow-left" />
-  </div>
-  <div class="col">
-    <strong
-      >2. En los últimos 14 días, ¿has tenido contacto con alguien con
-      síntomas que sugieran una infección por COVID-19?</strong
-    >
-  </div>
-</div>
+<head-title show-back="show">
+  2. En los últimos 14 días, ¿has tenido contacto con alguien con síntomas que
+  sugieran una infección por COVID-19?
+</head-title>
 
 <radius-row onclick="onChangeOption(this)" id="q2_ans1" key="yes"
   >Sí</radius-row
@@ -21,8 +14,8 @@
   <gentor-button onclick="next()">Siguiente</gentor-button>
 </div>
 
-<script src="/js/questions.js"></script>
-<script src="/js/components.js"></script>
+<script src="/js/questions.js?t=<?=time()?>" type="text/javascript"></script>
+<script src="/js/components.js?t=<?=time()?>" type="text/javascript"></script>
 <script src="/js/q2.js"></script>
 
 {% endblock %}

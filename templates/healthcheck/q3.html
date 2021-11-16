@@ -1,26 +1,24 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
 
-<div class="row p-2" style="background: #fff">
-  <div class="col-1 d-flex justify-center align-items-center" onclick="goBack(this)" style="cursor: pointer">
-    <img src="/icons/arrow-left.png" alt="arrow-left" />
-  </div>
-  <div class="col">
-    <strong>3. ¿Te has realizado la prueba de COVID-19?</strong>
-  </div>
-</div>
+<head-title show-back="show"> 3. ¿Te has realizado la prueba de COVID-19? </head-title>
 
-
-<radius-row id="q3_ans1" onclick="onChange(this)">Sí, estoy esperando resultados</radius-row>
-<radius-row id="q3_ans2" onclick="onChange(this)">Sí, tuve un resultado positivo</radius-row>
-<radius-row id="q3_ans3" onclick="onChange(this)">Sí, tuve un resultado negativo</radius-row>
+<radius-row id="q3_ans1" onclick="onChange(this)"
+  >Sí, estoy esperando resultados</radius-row
+>
+<radius-row id="q3_ans2" onclick="onChange(this)"
+  >Sí, tuve un resultado positivo</radius-row
+>
+<radius-row id="q3_ans3" onclick="onChange(this)"
+  >Sí, tuve un resultado negativo</radius-row
+>
 <radius-row id="q3_ans4" onclick="onChange(this)">No</radius-row>
 
 <div class="p-5 d-flex justify-content-center">
   <gentor-button onclick="next()">Siguiente</gentor-button>
 </div>
 
-<script src="/js/questions.js"></script>
-<script src="/js/components.js"></script>
+<script src="/js/questions.js?t=<?=time()?>" type="text/javascript"></script>
+<script src="/js/components.js?t=<?=time()?>" type="text/javascript"></script>
 <script src="/js/q3.js"></script>
 
 {% endblock %}

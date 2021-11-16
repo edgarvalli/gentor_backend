@@ -1,5 +1,13 @@
 const props = {
-  links: ["gentor-button", "radius-row", "list-row", "checkbox-row","checkbox-short"],
+  links: [
+    "gentor-button",
+    "radius-row",
+    "list-row",
+    "checkbox-row",
+    "checkbox-short",
+    "head-title",
+    "contact-row",
+  ],
   css: ["/css/components.css"],
 };
 

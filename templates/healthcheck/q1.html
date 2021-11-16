@@ -1,12 +1,8 @@
 {% extends 'healthcheck/layout.html' %} {% block content %}
-<div class="row p-2" style="background: #fff">
-  <div class="col-12" id="question-text">
-    <strong
-      >1. ¿Haz presentado alguno de los siguientes síntomas en los últimos 14
-      días?</strong
-    >
-  </div>
-</div>
+
+<head-title>
+  1. ¿Haz presentado alguno de los siguientes síntomas en los últimos 14 días?
+</head-title>
 
 <list-row
   onclick="selectOption(this,'yes')"
@@ -26,9 +22,8 @@
 <div class="p-5 d-flex justify-content-center">
   <gentor-button onclick="next()">Siguiente</gentor-button>
 </div>
-
-<script src="/js/questions.js"></script>
-<script src="/js/components.js"></script>
-<script src="/js/q1.js"></script>
+<script src="/js/questions.js?t=<?=time()?>" type="text/javascript"></script>
+<script src="/js/components.js?t=<?=time()?>" type="text/javascript"></script>
+<script src="/js/q1.js?t=<?=time()?>" type="text/javascript"></script>
 
 {% endblock %}
