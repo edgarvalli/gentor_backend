@@ -10,6 +10,10 @@ function next() {
   if (answer.code === "q2_ans1")
     return (window.location.href = "/healthcheck/questions/q3");
 
+  console.log(isInResponses("q1_ans1","q1"))
+  if (isInResponses("q1_ans1","q1"))
+    return (window.location.href = "/healthcheck/questions/q3");
+
   const responses = getResponses();
   if ("q3" in responses) delete responses.q3;
   sessionStorage.setItem("responses", JSON.stringify(responses));
