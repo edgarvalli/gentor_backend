@@ -5,7 +5,7 @@ const ans2 = document.getElementById("q4_ans2");
 const answer = {
   code: null,
   questioncode: viewKey,
-  question: "¿Haz viajado en los últimos 7 días?",
+  question: "¿Has viajado en los últimos 7 días?",
   answer: null,
 };
 
