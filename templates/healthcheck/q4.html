@@ -97,6 +97,18 @@
   <gentor-button onclick="sendData()">Enviar</gentor-button>
 </div>
 
+<div class="loader justify-content-center align-items-center" id="loader">
+  <div>
+    <div class="loader-container d-flex justify-content-center">
+      <div class="loader-item"></div>
+      <div class="loader-item"></div>
+      <div class="loader-item"></div>
+      <div class="loader-item"></div>
+    </div>
+    <h2 class="text-white">Enviando datos ...</h2>
+  </div>
+</div>
+
 <script src="/js/questions.js?t=<?=time()?>" type="text/javascript"></script>
 <script src="/js/components.js?t=<?=time()?>" type="text/javascript"></script>
 <script src="/js/q4.js"></script>

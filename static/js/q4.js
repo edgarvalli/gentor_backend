@@ -73,6 +73,8 @@ function sendData() {
     });
   }
 
+  document.getElementById("loader").style.display = "flex"
+
   const responses = getResponses();
   const body = {
     data: responses,
@@ -93,6 +95,11 @@ function sendData() {
       if (res.error) return alert(res.message);
       sessionStorage.clear()
       window.location.href = '/healthcheck/gratefulness'
+      document.getElementById("loader").style.display = "none"
+    }).catch(error => {
+      alert("Hubo un error al guardar los datos");
+      console.log(error);
+      document.getElementById("loader").style.display = "none"
     });
 }
 

@@ -151,6 +151,36 @@
   width: 40%;
 }
 
+.loader {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.loader-item {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  border: solid 1px var(--gentor-yellow);
+  border-radius: 50%;
+  animation: loader-move 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loader-move {
+  0% {
+    background: var(--gentor-grey);
+  }
+  100% {
+    background: var(--gentor-yellow);
+  }
+}
+
 @media (min-width: 650px) {
   .container-footer {
     width: 42%;

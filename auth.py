@@ -22,8 +22,8 @@ def _build_msal_app(cache=None, authority=None):
 
 
 def _build_auth_code_flow(authority=None, scopes=None):
-    redirect_uri = "https://app.gentor.com/getAToken"
-    # redirect_uri = url_for("authorized", _external=True)
+    # redirect_uri = "https://app.gentor.com/getAToken"
+    redirect_uri = url_for("authorized", _external=True)
     return _build_msal_app(authority=authority).initiate_auth_code_flow(
         scopes or [],
         redirect_uri=redirect_uri)
