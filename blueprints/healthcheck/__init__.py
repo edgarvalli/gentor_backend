@@ -1,7 +1,8 @@
 from flask import Blueprint, session, redirect, render_template, request
-from auth import _build_auth_code_flow
+from auth import _build_auth_code_flow, _get_token_from_cache
 from db import mysql_driver as db
 import app_config
+from functools import wraps
 
 db.config['database'] = app_config.HEALTHCHECK_DB
 
@@ -19,12 +20,15 @@ def heatlcheck_login():
     # here we choose to also collect end user consent upfront
     session['app_redirect'] = '/healthcheck/home'
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
+
     return redirect(session["flow"]["auth_uri"])
 
 
 @healthcheck.route("/home")
 def home():
     email = session['user']['preferred_username']
+    session['mstoken'] = _get_token_from_cache(app_config.SCOPE)[
+        'access_token']
     r = db.fetchone(f"select * from users where email='{email}'")
     if r.get('result') is None:
         user = {
@@ -77,10 +81,97 @@ def responses_save():
                 r['userid'] = userid
                 answers.append(r)
 
-        session['document_open'] =  False
-        return db.insermany('responses', answers)
-    
+        session['document_open'] = False
+        user = session['user']['preferred_username']
+        r = db.insermany('responses', answers)
+        r1 = db.commit(
+            f"update users set total_documents=total_documents + 1 where email='{user}'")
+        print(r1)
+        return r
+
     return {
         'error': True,
         'message': 'Documento ya guardado'
     }
+
+
+@healthcheck.route('/loginadmin')
+def login_admin():
+    session['app_redirect'] = '/healthcheck/admin'
+    session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
+    return redirect(session["flow"]["auth_uri"])
+
+
+def is_auth_admin(f):
+    @wraps(f)
+    def run(*args, **kvargs):
+        if not session.get('user'):
+            return redirect('/healthcheck/loginadmin')
+        else:
+            return f(*args, **kvargs)
+    return run
+
+
+@healthcheck.route('/admin')
+@is_auth_admin
+def admin_route():
+    session['mstoken'] = _get_token_from_cache(app_config.SCOPE)[
+        'access_token']
+    user = session['user']
+    query = f"select * from users where email='{user['preferred_username']}' and is_admin=1"
+    u = db.fetchone(query=query)
+    if u['result'] is None:
+        return f"<div>El usuario {user['preferred_username']} no autorizado volver al <a href='/healthcheck'>inicio</a> </div>"
+
+    users = db.fetchall("select * from users")
+    if users['error']:
+        users = []
+    else:
+        users = users['result']
+
+    return render_template('/healthcheck/admin.html', user=user, users=users, token=session['mstoken'])
+
+
+@healthcheck.route('/admin/encuestas')
+@is_auth_admin
+def encuestas():
+    userid = request.args.get('userid', 1)
+    user = db.fetchone(f"select * from users where id={userid}")
+    docs = db.fetchall(
+        f"select * from documents where userid={userid} order by createddate desc")
+    return render_template('/healthcheck/encuestas.html',
+                           documents=docs.get('result', []),
+                           user=user.get('result', {}),
+                           token=session['mstoken'])
+
+
+@healthcheck.route('/admin/encuesta')
+@is_auth_admin
+def encuesta():
+    userid = request.args.get('userid', 1)
+    docid = request.args.get('docid', 1)
+    user = db.fetchone(f"select * from users where id={userid}")
+    responses = db.fetchall(
+        f"select * from responses where documentid={docid} order by createddate desc")
+
+    resps = {}
+
+    for r in responses.get('result'):
+
+        key = r['questioncode']
+        answer = r['answer']
+
+        if r['extrainfo']:
+            answer = f"{r['extrainfo']}:  {answer}"
+
+        if not resps.get(key):
+            resps[key] = {}
+            resps[key]['question'] = r['question']
+            resps[key]['answers'] = [answer]
+        else:
+            resps[key]['answers'].append(answer)
+
+    return render_template('/healthcheck/encuesta.html',
+                           responses=resps,
+                           user=user.get('result', {}),
+                           token=session['mstoken'])

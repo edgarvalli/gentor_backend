@@ -1,14 +1,15 @@
 #import uuid
 from werkzeug.middleware.proxy_fix import ProxyFix
 from auth import _build_auth_code_flow, _load_cache, _save_cache, _build_msal_app, _get_token_from_cache
-from blueprints.healthcheck import healthcheck
-from blueprints.guardata import guardata
 import requests
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
 import app_config
 
+from blueprints.healthcheck import healthcheck
+from blueprints.healthcheck.api import healthcheck_api
+from blueprints.guardata import guardata
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
@@ -16,6 +17,7 @@ app.config.from_object(app_config)
 Session(app)
 
 app.register_blueprint(healthcheck,root_path = app.root_path)
+app.register_blueprint(healthcheck_api,root_path = app.root_path)
 app.register_blueprint(guardata)
 
 

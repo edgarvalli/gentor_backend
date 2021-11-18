@@ -1,0 +1,25 @@
+{% extends 'healthcheck/layout_admin.html'%} {% block content %}
+
+<h3>Colaboradores que respondieron la encuesta:</h3>
+<div class="list-group" id="list">
+  {% for u in users %}
+  <a
+    href="/healthcheck/admin/encuestas?userid={{u.id}}"
+    class="
+      list-group-item list-group-item-action
+      d-flex
+      justify-content-between
+      align-items-center
+    "
+    style="cursor: pointer"
+  >
+    {{u.name}}
+    <span class="badge badge-primary badge-pill" style="background: #eaab35">
+      {{u.total_documents}}
+    </span>
+  </a>
+  {% endfor %}
+</div>
+<!-- <script src="/js/healthcheckadmin.js"></script> -->
+
+{%endblock%}

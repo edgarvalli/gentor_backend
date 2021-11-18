@@ -22,6 +22,7 @@ query = {
             email varchar(250) unique,
             name varchar(250),
             is_admin tinyint default 0,
+            total_documents bigint default 0,
             createddate timestamp default now(),
             INDEX index_mail (email)
         );

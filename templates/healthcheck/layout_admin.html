@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    {% include 'healthcheck/head.html' %}
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-light navbar-bg-gentor">
+        <img
+          src="https://gentor.com/es/img/home/SVG_ISOTIPO.svg"
+          class="img-fluid mt-md-2 my-3 isotipo"
+          width="50"
+        />
+        <div class="nav-item" style="margin-right: 5rem">
+          <img
+            width="40"
+            height="40"
+            class="rounded-circle"
+            id="avatar"
+            alt="avatar"
+            style="cursor: pointer"
+          />
+        </div>
+      </nav>
+    </header>
+
+    <div class="layout pt-4 pb-4">
+      <img src="/img/bg-main.jpeg" alt="bg-main" class="med-layout-bg" />
+      <div class="container" id="container">
+        <input type="hidden" id="token" value="{{token}}" />
+        {% block content %} {% endblock %}
+      </div>
+    </div>
+
+    <script>
+      const token = document.getElementById("token").value;
+      fetch("https://graph.microsoft.com/v1.0/me/photo/$value", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      })
+        .then((resp) => resp.blob())
+        .then((blob) => {
+          const url = window.URL || window.webkitURL;
+          uri = url.createObjectURL(blob);
+          document.getElementById("avatar").setAttribute("src", uri);
+        });
+    </script>
+
+    {% include 'healthcheck/footer.html' %}
+  </body>
+</html>

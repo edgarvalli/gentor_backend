@@ -1,0 +1,16 @@
+{% extends 'healthcheck/layout_admin.html'%} {% block content %}
+
+<h3>Usuario {{user.name}}</h3>
+<div class="list-group" id="list">
+  {% for k in responses.keys() %}
+  <li class="list-group-item list-group-item-action">
+    <div>{{responses[k]['question']}}</div>
+    {% for a in responses[k]['answers'] %}
+        <div class="text-primary p-2">{{a}}</div>
+    {% endfor %}
+  </li>
+  {% endfor %}
+</div>
+<!-- <script src="/js/healthcheckadmin.js"></script> -->
+
+{%endblock%}

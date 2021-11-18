@@ -1,0 +1,22 @@
+{% extends 'healthcheck/layout_admin.html'%} {% block content %}
+
+<h3>Usuario {{user.name}}</h3>
+<div class="list-group" id="list">
+  {% for doc in documents %}
+  <a
+    href="/healthcheck/admin/encuesta?userid={{user.id}}&docid={{doc.id}}"
+    class="
+      list-group-item list-group-item-action
+      d-flex
+      justify-content-between
+      align-items-center
+    "
+    style="cursor: pointer"
+  >
+    Encuesta creada el {{doc.createddate.date().isoformat()}}
+  </a>
+  {% endfor %}
+</div>
+<!-- <script src="/js/healthcheckadmin.js"></script> -->
+
+{%endblock%}
