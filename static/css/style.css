@@ -51,8 +51,11 @@
   width: auto;
   height: 30px;
   display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: center;
   justify-content: center;
   align-items: center;
+  -webkit-align-items: center;
 }
 
 .btn-next {
@@ -82,6 +85,7 @@
 }
 
 .navbar-bg-gentor {
+  position: relative;
   background: var(--gentor-grey);
   color: #ffffff;
 }
@@ -172,6 +176,28 @@
   animation-iteration-count: infinite;
 }
 
+.navbar-content {
+  width: 95%;
+  margin: auto;
+  display: flex;
+  position: relative;
+  justify-content:space-between;
+}
+
+.nav-menu {
+  height: 0;
+  min-width: 10rem;
+  right: 1px;
+  top: 2.5rem;
+  position: absolute;
+  overflow: hidden;
+  background: #ffffff;
+}
+.nav-menu-open {
+  height: auto;
+  overflow: auto;
+}
+
 @keyframes loader-move {
   0% {
     background: var(--gentor-grey);
@@ -193,8 +219,9 @@
 }
 
 @media (min-width: 768px) {
-  .isotipo {
-    margin-left: 3.5rem;
+
+  .navbar-content {
+    width: 87%;
   }
 
   .row-icon {

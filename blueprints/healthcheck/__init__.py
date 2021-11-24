@@ -1,12 +1,25 @@
 from flask import Blueprint, session, redirect, render_template, request
+from flask.helpers import send_file, send_from_directory
 from auth import _build_auth_code_flow, _get_token_from_cache
 from db import mysql_driver as db
-import app_config
 from functools import wraps
+import app_config
+import xlsxwriter
+import os
 
 db.config['database'] = app_config.HEALTHCHECK_DB
 
 healthcheck = Blueprint('healcheck', __name__, url_prefix="/healthcheck")
+
+
+def get_users_from_db():
+    users = db.fetchall("select * from users")
+    if users['error']:
+        users = []
+    else:
+        users = users['result']
+
+    return users
 
 
 @healthcheck.route("/")
@@ -123,11 +136,7 @@ def admin_route():
     if u['result'] is None:
         return f"<div>El usuario {user['preferred_username']} no autorizado volver al <a href='/healthcheck'>inicio</a> </div>"
 
-    users = db.fetchall("select * from users")
-    if users['error']:
-        users = []
-    else:
-        users = users['result']
+    users = get_users_from_db()
 
     return render_template('/healthcheck/admin.html', user=user, users=users, token=session['mstoken'])
 
@@ -142,7 +151,8 @@ def encuestas():
     return render_template('/healthcheck/encuestas.html',
                            documents=docs.get('result', []),
                            user=user.get('result', {}),
-                           token=session['mstoken'])
+                           token=session['mstoken'],
+                           users=get_users_from_db())
 
 
 @healthcheck.route('/admin/encuesta')
@@ -174,4 +184,80 @@ def encuesta():
     return render_template('/healthcheck/encuesta.html',
                            responses=resps,
                            user=user.get('result', {}),
-                           token=session['mstoken'])
+                           token=session['mstoken'],
+                           users=get_users_from_db())
+
+
+@healthcheck.route('/admin/report')
+@is_auth_admin
+def crate_report():
+
+    f = 'temp/encuestas.xlsx'
+    if os.path.exists(f):
+        os.remove(f)
+
+    sdate = request.args.get('startdate', '2020-01-01')
+    edate = request.args.get('enddate', '2022-01-01')
+    query = f"""
+        select u.name Usuario, u.email Correo,
+        r.question Pregunta,r.extrainfo Extra,r.answer Respuesta,
+        r.createddate FechaCreación
+        from responses r
+        inner join users u on r.userid=u.id        
+        where r.createddate between '{sdate}' and '{edate}'
+    """
+    rows = db.fetchall(query=query)
+    rows = rows.get('result', [])
+    if len(rows) == 0:
+        return {
+            'error': True,
+            'message': 'No se encontraron datos en el rango de fechas'
+        }
+
+    wb = xlsxwriter.Workbook(f)
+    sheet1 = wb.add_worksheet()
+    headers = rows[0].keys()
+    bold = wb.add_format({'bold': True})
+
+    col = 0
+    row = 0
+    for h in headers:
+        sheet1.write(row, col, h, bold)
+        col += 1
+
+    row = 1
+    for r in rows:
+        col = 0
+        for k in headers:
+            if k == 'FechaCreación':
+                date = wb.add_format({'num_format': 'yyyy-mm-dd'})
+                sheet1.write(row, col, r[k], date)
+            else:
+                sheet1.write(row, col, r[k])
+            col += 1
+        row += 1
+
+    wb.close()
+
+    return {
+        'error': False,
+        'message': 'Prueba del servidor'
+    }
+
+
+@healthcheck.route('/admin/download')
+def send_report():
+
+    f = 'temp/encuestas.xlsx'
+    f = os.path.abspath(f)
+    exists = os.path.exists(f)
+
+    if exists is False:
+        return {
+            'error': True,
+            'message': 'El reporte no esta creado'
+        }
+
+    f = os.path.abspath(f)
+
+    return send_file(f, as_attachment=True)
