@@ -1,9 +1,9 @@
+from db import mysql_driver as db
+import app_config
 import sys
 from set_root_path import set_root_path
 set_root_path()
 
-import app_config
-from db import mysql_driver as db
 database = app_config.HEALTHCHECK_DB
 
 #### CREATING DATABASE ###
@@ -46,6 +46,15 @@ query = {
             extrainfo varchar(1000),
             createddate timestamp default now(),
             INDEX filters (userid,documentid,code,questioncode)
+        );
+    """,
+    'questions': """
+        CREATE TABLE IF NOT EXISTS questions (
+            id int primary key auto_increment,
+            code varchar(50),
+            question varchar(1000),
+            createddate timestamp default now(),
+            INDEX code (code)
         );
     """
 }
