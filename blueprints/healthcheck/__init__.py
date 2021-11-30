@@ -195,6 +195,7 @@ def create_report():
     from itertools import groupby
 
     f = 'temp/encuestas.xlsx'
+    f = os.path.abspath(f)
     if os.path.exists(f):
         os.remove(f)
 
