@@ -183,7 +183,7 @@
   margin: auto;
   display: flex;
   position: relative;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 
 .nav-menu {
@@ -221,7 +221,6 @@
 }
 
 @media (min-width: 768px) {
-
   .navbar-content {
     width: 87%;
   }
@@ -259,5 +258,15 @@
     margin: auto;
     margin-left: 20%;
     bottom: 3rem;
+  }
+
+  .end {
+    position: relative;
+    height: 100%;
+    width: 50%;
+    top: 0;
+    position: absolute;
+    left: 0;
+    margin-left: 25%;
   }
 }

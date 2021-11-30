@@ -190,22 +190,33 @@ def encuesta():
 
 @healthcheck.route('/admin/report')
 @is_auth_admin
-def crate_report():
+def create_report():
+
+    from itertools import groupby
 
     f = 'temp/encuestas.xlsx'
     if os.path.exists(f):
         os.remove(f)
 
+    headers = db.fetchall("select * from headers")
+    headers = headers.get('result', [])
+
     sdate = request.args.get('startdate', '2020-01-01')
     edate = request.args.get('enddate', '2022-01-01')
+
+    lastrow = f"where r.createddate between '{sdate}' and '{edate}'"
+    if edate == sdate:
+        lastrow = f"where r.createddate >= '{sdate}'"
     query = f"""
-        select u.name Usuario, u.email Correo,
+        select r.documentid, r.questioncode,r.code, u.name Usuario, u.email Correo,
         r.question Pregunta,r.extrainfo Extra,r.answer Respuesta,
         r.createddate FechaCreación
         from responses r
-        inner join users u on r.userid=u.id        
-        where r.createddate between '{sdate}' and '{edate}'
+        inner join users u on r.userid=u.id
+
     """
+    query += lastrow
+
     rows = db.fetchall(query=query)
     rows = rows.get('result', [])
     if len(rows) == 0:
@@ -216,25 +227,50 @@ def crate_report():
 
     wb = xlsxwriter.Workbook(f)
     sheet1 = wb.add_worksheet()
-    headers = rows[0].keys()
     bold = wb.add_format({'bold': True})
 
-    col = 0
+    i = 0
+    col = 2
     row = 0
-    for h in headers:
-        sheet1.write(row, col, h, bold)
+    sheet1.write(row, 0, 'Usuario', bold)
+    sheet1.write(row, 1, 'Fecha', bold)
+
+    for k in headers:
+        sheet1.write(row, col, k['header'], bold)
+        headers[i]['col'] = col
+        i += 1
         col += 1
 
+    def key_func(k):
+        return k['documentid']
+
+    def getcol(code):
+        col = None
+        for h in headers:
+            if h['code'] == code:
+                col = h['col']
+                break
+
+        return col
+
+    rows = sorted(rows, key=key_func)
+    rows = groupby(rows, key_func)
+
     row = 1
-    for r in rows:
-        col = 0
-        for k in headers:
-            if k == 'FechaCreación':
-                date = wb.add_format({'num_format': 'yyyy-mm-dd'})
-                sheet1.write(row, col, r[k], date)
-            else:
-                sheet1.write(row, col, r[k])
-            col += 1
+    for _, v in rows:
+        items = list(v)
+        for item in items:
+            date = wb.add_format({'num_format': 'yyyy-mm-dd'})
+            sheet1.write(row, 0, item['Usuario'])
+            sheet1.write(row, 1, item['FechaCreación'], date)
+
+            col = getcol(item['questioncode'])
+            if len(item['code']) > 8:
+                col = getcol(item['code'])
+
+            if col is None:
+                col = getcol('q4_ans1_5')
+            sheet1.write(row, col, item['Respuesta'])
         row += 1
 
     wb.close()

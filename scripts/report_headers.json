@@ -1,0 +1,102 @@
+[
+  {
+    "code": "q1",
+    "sequence": 1,
+    "header": "¿Haz presentado alguno de los siguientes síntomas en los últimos 14 días?"
+  },
+  {
+    "code": "q1_ans1_1",
+    "sequence": 2,
+    "header": "Fiebre"
+  },
+  {
+    "code": "q1_ans1_2",
+    "sequence": 3,
+    "header": "Escalofríos"
+  },
+  {
+    "code": "q1_ans1_3",
+    "sequence": 4,
+    "header": "Tos seca"
+  },
+  {
+    "code": "q1_ans1_4",
+    "sequence": 5,
+    "header": "Tos húmeda (con mucosidad)"
+  },
+  {
+    "code": "q1_ans1_5",
+    "sequence": 6,
+    "header": "Dificultad para respirar"
+  },
+  {
+    "code": "q1_ans1_6",
+    "sequence": 7,
+    "header": "Pérdida del olfato"
+  },
+  {
+    "code": "q1_ans1_7",
+    "sequence": 8,
+    "header": "Fatiga"
+  },
+  {
+    "code": "q1_ans1_8",
+    "sequence": 9,
+    "header": "Opresión en el pecho"
+  },
+  {
+    "code": "q1_ans1_9",
+    "sequence": 10,
+    "header": "Dolor de garganta / Escurrimiento nasal / Congestión"
+  },
+  {
+    "code": "q1_ans1_10",
+    "sequence": 11,
+    "header": "Vómito"
+  },
+  {
+    "code": "q1_ans1_11",
+    "sequence": 12,
+    "header": "Diarrea"
+  },
+  {
+    "code": "q2",
+    "sequence": 13,
+    "header": "En los últimos 14 días, ¿has tenido algún contacto con alguien con síntomas que sugieran una infección por COVID-19?"
+  },
+  {
+    "code": "q3",
+    "sequence": 14,
+    "header": "¿Te has realizado la prueba de COVID-19?"
+  },
+  {
+    "code": "q4",
+    "sequence": 15,
+    "header": "¿Haz viajado en los últimos 7 días?"
+  },
+  {
+    "code": "q4_ans1_1",
+    "sequence": 16,
+    "header": "Fecha de inicio del viaje"
+  },
+  {
+    "code": "q4_ans1_2",
+    "sequence": 17,
+    "header": "Fecha de fin del viaje"
+  },
+  {
+    "code": "q4_ans1_3",
+    "sequence": 18,
+    "header": "Origen"
+  },
+  {
+    "code": "q4_ans1_4",
+    "sequence": 19,
+    "header": "Destino"
+  },
+  {
+    "code": "q4_ans1_5",
+    "sequence": 20,
+    "header": "Motivo de viaje"
+  }
+]
