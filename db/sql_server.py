@@ -118,5 +118,5 @@ def insertmany_cfdis(model="", data=[]):
 
         return {
             "error": True,
-            "message": msg
+            "message": f"[{uuid}]: {msg}"
         }
