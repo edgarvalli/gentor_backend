@@ -62,7 +62,7 @@
           </div>
         </div>
         <div class="row mt-4">
-          <a href="/layouts/layout_guardata.csv" class="col p-3"
+          <a href="/layouts/layout_guardata.xlsx" class="col p-3"
             >Descargar Template</a
           >
         </div>
@@ -71,16 +71,20 @@
             class="btn btn-primary"
             style="width: 8rem"
             id="button-import"
-            v-on:click="importCfdis"
+            v-on:click="sendFileToServer"
           >
             IMPORT
           </button>
         </div>
         <div class="row mt-4" v-if="message !== ''">
           <div class="col-12">
-            <strong>Mesanje:</strong>
+            <strong>Mensaje: {{msg}}</strong>
           </div>
-          <div class="col-12">{{message}}</div>
+          <div class="col-12" style="max-height: 20vh; overflow-y: scroll;">
+            <div class="row" v-for="m in message">
+              <div class="col-12 p-2">{{m}}</div>
+            </div>
+          </div>
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 from flask import Blueprint, send_file, request, session, redirect
 from flask.templating import render_template
+from openpyxl.workbook.workbook import Workbook
 from db import sql_server as db
 from functools import wraps
 from auth import _build_auth_code_flow
@@ -33,7 +34,7 @@ def guardata_index():
 
     if not session.get("user"):
         redirect_url = "/guardata/singin"
-        
+
     return redirect(redirect_url)
 
 
@@ -47,6 +48,7 @@ def guardata_verify():
         return render_template("guardata/forbidden.html", msg=msg)
     print(u)
     return redirect("/guardata/app")
+
 
 @guardata.route("/singin")
 def guardata_singin():
@@ -66,14 +68,68 @@ def guardata_app():
 @guardata.route("/import", methods=['POST'])
 @is_auth_api
 def import_guardata():
+    from openpyxl import load_workbook
 
-    data = request.get_json()
-    cfdis = data.get('data', [])
-    model = data.get('model', '')
+    ALLOWED_EXTENSIONS = ['xlsx','xls']
+    file = request.files['file']
+    ext = file.filename.split('.')
+    ext = ext[len(ext) - 1]
+    if ext in ALLOWED_EXTENSIONS:
+        data = []
+        model = request.args.get('model', '')
+        wb = load_workbook(file)
+        sheet = wb.sheetnames[0]
+        sheet = wb[sheet]
+        row = 1
+        col = 1
+        mandatorykey = ['UUID', 'uuid', 'Uuid']
+        mkindex = None
+        headers = []
+        v = sheet.cell(row, col).value
 
-    result = db.insertmany_cfdis(model=model, data=cfdis)
+        while v is not None:
+            headers.append(v)
+            if v in mandatorykey:
+                mkindex = col
+            col += 1
+            v = sheet.cell(row, col).value
 
-    return result
+        row = 2
+        col = 1
+        v = sheet.cell(row, mkindex).value
+
+        msg = ''
+        sqlerror = False
+        while v is not None:
+            item = {}
+            for h in headers:
+                item[h] = sheet.cell(row, col).value
+                col += 1
+
+            r = db.insert(model, item)
+
+            if r is None:
+                msg += f"{v} guardado correctamente\n"
+            else:
+                sqlerror = True
+                if r.get('code') == '23000':
+                    msg += f"El UUID {v} ya existe\n"
+                else:
+                    msg += f"[{v}]: {r.get('message')}\n"
+
+            row += 1
+            col = 1
+            v = sheet.cell(row, mkindex).value
+
+        result = {'error': False, 'message': msg}
+        if sqlerror:
+            result['sqlmessage'] = 'Ocurrieron errores favor de revisar los log'
+        else:
+            result['sqlmessage'] = 'Se importo todo correcto'
+        
+        return result
+
+    return {'error': True, 'message': 'Test'}
 
 
 @guardata.route("/update/cfdis", methods=["POST", "GET"])

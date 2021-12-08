@@ -35,10 +35,11 @@ new Vue({
   el: "#app",
   data: {
     cfdis: [],
-    message: "",
+    message: [],
     file: null,
     importShow: false,
     empresas: [],
+    msg: "",
   },
   mounted: function () {
     this.fetchInit();
@@ -80,6 +81,35 @@ new Vue({
 
       this.message = resp.message || "Importado!!!!";
     },
+    sendFileToServer: async function () {
+      const empresa = document.getElementById("empresa");
+      if (empresa.value === "") return alert("Debe seleccionar la empresa");
+      const file = document.getElementById("file_select");
+      const loader = document.getElementById("loader");
+
+      loader.style.display = "flex";
+
+      // BLOCK IMPORT
+
+      const f = new FormData();
+      f.append("file", file.files[0]);
+      f.append("user", "ev");
+
+      const request = await fetch("/guardata/import?model=" + empresa.value, {
+        method: "POST",
+        body: f,
+      });
+
+      const response = await request.json();
+      // if (!response.error) file.value = "";
+      loader.style.display = "none";
+
+      // END BLOCK
+
+      loader.style.display = "none";
+      this.message = response.message.split("\n") || ["Importado!!!!"];
+      this.msg = response.sqlmessage || "Importado!!!!";
+    },
     updateCfdis: async function () {
       const loader = document.getElementById("loader");
       const cfdisEl = document.getElementById("uuids");
@@ -110,7 +140,7 @@ new Vue({
       }
 
       cfdisEl.value = "";
-      e.value = ""
+      e.value = "";
 
       loader.style.display = "none";
     },
