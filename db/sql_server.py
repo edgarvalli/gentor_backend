@@ -1,7 +1,7 @@
 import pyodbc
 
 server = '10.2.10.4\\SQLEXPRESS'
-database = 'SAPLINK'
+database = 'GUARDATA'
 username = 'sa'
 password = '$ERVER2019soporte'
 driver = "ODBC Driver 17 for SQL Server"
