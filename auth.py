@@ -1,7 +1,6 @@
 import app_config
 import msal
-from urllib.parse import urlparse
-from flask import session, url_for,request
+from flask import session, url_for
 
 
 def _load_cache():
@@ -23,9 +22,7 @@ def _build_msal_app(cache=None, authority=None):
 
 
 def _build_auth_code_flow(authority=None, scopes=None):
-    url = urlparse(request.base_url)
-
-    redirect_uri = f"{url.scheme}://{url.netloc}/getAToken"
+    redirect_uri = "https://app.gentor.com/getAToken"
     # redirect_uri = url_for("authorized", _external=True)
     return _build_msal_app(authority=authority).initiate_auth_code_flow(
         scopes or [],
