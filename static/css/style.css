@@ -18,7 +18,17 @@
   position: relative;
   width: 100%;
   min-height: 60vh;
-  background: rgba(0, 0, 0, 0.1);
+  /* background: rgba(0, 0, 0, 0.1); */
+  background-image: url("/img/bg-main.png");
+  background-attachment:fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: 100% 100%;
+  /* height: 100vh; */
+  /* background:red; */
 }
 
 .container {
@@ -38,10 +48,10 @@
 
 .med-layout-bg {
   position: absolute;
-  width: 100%;
+  width: 60%;
   height: 100%;
   top: 0;
-  left: 0;
+  left: 20%;
   z-index: -2;
 }
 
@@ -218,6 +228,10 @@
   .row-icon {
     width: 20%;
   }
+  .med-layout-bg {
+    width: 100%;
+    left: 0;
+  }
 }
 
 @media (min-width: 768px) {
@@ -236,6 +250,11 @@
   .container-footer {
     width: 90%;
     margin: auto;
+  }
+
+  .med-layout-bg {
+    width: 80%;
+    left: 10%;
   }
 }
 
@@ -268,5 +287,9 @@
     position: absolute;
     left: 0;
     margin-left: 25%;
+  }
+  .med-layout-bg {
+    width: 70%;
+    left: 15%;
   }
 }
