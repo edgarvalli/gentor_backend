@@ -1,5 +1,5 @@
 from flask import Blueprint, session, redirect, render_template, request
-from flask.helpers import send_file, send_from_directory
+from flask.helpers import send_file
 from auth import _build_auth_code_flow, _get_token_from_cache
 from db import mysql_driver as db
 from functools import wraps

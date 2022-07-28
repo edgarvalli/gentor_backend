@@ -26,3 +26,5 @@ SCOPE = ["User.ReadBasic.All"]
 SESSION_TYPE = "filesystem"  # Specifies the token cache should be stored in server-side session
 
 HEALTHCHECK_DB = 'healthcheckdb'
+
+WORKING_PATH = ""

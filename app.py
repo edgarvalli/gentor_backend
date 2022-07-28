@@ -5,11 +5,12 @@ import requests
 from flask import Flask, render_template, session, request, redirect, url_for
 from flask_session import Session  # https://pythonhosted.org/Flask-Session
 import msal
-import app_config
+import app_config, pathlib
 
 from blueprints.healthcheck import healthcheck
 from blueprints.healthcheck.api import healthcheck_api
-from blueprints.guardata import guardata
+from blueprints.aad import aad
+from blueprints import infosat
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
@@ -17,9 +18,14 @@ app.config['UPLOAD_FOLDER'] = '/temp'
 # app.config['SERVER_NAME'] = 'app.gentor.com'
 Session(app)
 
+working_path = pathlib.Path(__file__).parent
+
+infosat.working_path = working_path
+
 app.register_blueprint(healthcheck,root_path = app.root_path)
 app.register_blueprint(healthcheck_api,root_path = app.root_path)
-app.register_blueprint(guardata)
+app.register_blueprint(infosat.infosatapi)
+app.register_blueprint(aad)
 
 
 # This section is needed for url_for("foo", _external=True) to automatically
