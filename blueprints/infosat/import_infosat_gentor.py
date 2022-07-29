@@ -1,7 +1,6 @@
-import os, base64
+import os
 from utils import mailer
 from pathlib import Path
-from datetime import datetime
 from contpaqi.import_from_contipaq import ImportFromContpaqi
 from utils.monitor_status_import import MonitorStatusImport
 
@@ -22,8 +21,13 @@ class ImportToInfosat:
         
         return html
 
-    def run(self, logpath: str = "", startdate:str = None, enddate:str = None, userid: str = None):
+    def run(self, logpath: str = "", startdate:str = None, enddate:str = None, userid: str = None, display:bool = True):
 
+        if userid is None:
+            self.monitor.userid = "System User"
+        else:
+            self.monitor.userid = userid
+            
         process = self.monitor.create("Iniciando proceso")
         self.processid = process.id
 
@@ -33,10 +37,10 @@ class ImportToInfosat:
         linkcontpaqi.startdate = startdate
         linkcontpaqi.enddate = enddate
 
-        self.log += linkcontpaqi.run()
+        self.log += linkcontpaqi.run(display_console=display, userid=userid)
 
         logfile = os.path.join(logpath,self.processid + ".txt")
-        print(logfile)
+
         f = open(logfile, "w")
         f.write(self.log)
         f.close()

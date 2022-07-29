@@ -10,7 +10,7 @@ import app_config, pathlib
 from blueprints.healthcheck import healthcheck
 from blueprints.healthcheck.api import healthcheck_api
 from blueprints.aad import aad
-from blueprints import infosat
+from blueprints.infosat.api import infosatapi
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
@@ -20,11 +20,9 @@ Session(app)
 
 working_path = pathlib.Path(__file__).parent
 
-infosat.working_path = working_path
-
 app.register_blueprint(healthcheck,root_path = app.root_path)
 app.register_blueprint(healthcheck_api,root_path = app.root_path)
-app.register_blueprint(infosat.infosatapi)
+app.register_blueprint(infosatapi)
 app.register_blueprint(aad)
 
 

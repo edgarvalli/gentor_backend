@@ -39,7 +39,7 @@ class ImportFromContpaqi:
         """
         return query
     
-    def insert_into_db(self,uuid, _cfdis: list, rfc):
+    def insert_into_db(self,uuid, _cfdis: list, rfc, display_console: bool = True):
             i = 1
 
             for cfdi in _cfdis:
@@ -88,20 +88,29 @@ class ImportFromContpaqi:
                         self.log += (self.divider + '\n')
 
                         if r.errorcode == '23000':
-                            print(f"El UUID {fuuid} ya existe")
+                            if display_console:
+                                print(f"El UUID {fuuid} ya existe")
                             self.log += (f"El UUID {fuuid} ya existe\n")
                         else:
-                            print(f"[{fuuid}]=={r.get('message')}")
+                            if display_console:
+                                print(f"[{fuuid}]=={r.get('message')}")
                             self.log += (f"[{fuuid}]=={r.get('message')}\n")
                     else:
-                        print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n")
+                        if display_console:
+                            print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n")
                         i = i + 1
                         # print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}")
                         self.log += f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n"
 
-    def run(self):
+    def run(self, display_console: bool = True, userid: str = None):
         empresas = helpers.empresas()
         
+
+        if userid is None:
+            self.monitor.userid = "System User"
+        else:
+            self.monitor.userid = userid
+
         for e in empresas:
 
             adDB = e['ComercialDB']
@@ -113,9 +122,10 @@ class ImportFromContpaqi:
 
             line = f"Trabajando en la empresa {e.get('RazonSocial','No Existe')}"
             self.monitor.update(uuid=self.processid, code=2, message=line)
-            print(line)
-            print(f"RFC={rfc}")
-            print('Obteniendos los cfdis')
+            if display_console:
+                print(line)
+                print(f"RFC={rfc}")
+                print('Obteniendos los cfdis')
 
             self.log += (f"[{self.startdate}] {line}\n")
             self.log += (f"RFC={rfc}\n")
@@ -140,7 +150,8 @@ class ImportFromContpaqi:
             if ctDB is not None:
                 dsl = helpers.uuid(ctDB, 'contabilidad')
                 if dsl in cfdis:
-                    print('Comercial y Contabilidad son el mismo DSL')
+                    if display_console:
+                        print('Comercial y Contabilidad son el mismo DSL')
                 else:
                     query = self.query_cfdis(dsl)
                     cfdis[dsl] = self.db.fetchall(query).data

@@ -1,6 +1,6 @@
 from datetime import datetime
-from utils.sql_server import SqlResponse
-from utils.sql_server import SqlConnector
+from .sql_server import SqlResponse
+from .sql_server import SqlConnector
 
 class MonitorResponse:
     id: str = ""
@@ -15,7 +15,7 @@ class MonitorStatusImport:
         self.db = SqlConnector()
         self.db.key = driver
 
-        if userid is None:
+        if userid is None or userid == "":
             self.userid = "System User"
         else:
             self.userid = userid
@@ -27,7 +27,7 @@ class MonitorStatusImport:
         else:
             return self.status[i]
 
-    def parse_monito_response(self, sqlresp: SqlResponse)-> MonitorResponse:
+    def parse_monitor_response(self, sqlresp: SqlResponse)-> MonitorResponse:
         r = MonitorResponse()
         if sqlresp.error:
             r.error = True
@@ -55,7 +55,7 @@ class MonitorStatusImport:
 
         result = self.db.insert(model="Procesos",data=data)
 
-        return self.parse_monito_response(result)
+        return self.parse_monitor_response(result)
 
 
     def update(self, uuid: str, code: int, message: str, finished: bool = False) -> MonitorResponse:
@@ -70,4 +70,4 @@ class MonitorStatusImport:
 
         r = self.db.update_by_uuid(uuid=uuid, model="Procesos", data=data)
                 
-        return self.parse_monito_response(r)
+        return self.parse_monitor_response(r)

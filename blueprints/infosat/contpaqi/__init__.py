@@ -1,1 +1,1 @@
-from . import insert_from_contpqi
+from . import import_from_contipaq

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infosat - Dashboard</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="http://fonts.cdnfonts.com/css/roboto" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/abad725bb6.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #e1e1e1;
+        }
+
+        table {
+            font-size: 12px;
+        }
+
+        .active>li {
+            background: #e1e1e1;
+        }
+
+        .dropdown-item {
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        i {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <p class="text-white">Infosat - Importaciones</p>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container bg-white mt-4 p-1" id="app">
+        <nav class="navbar mb-4">
+            <div class="container-fluid">
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#new-process">
+                    CREAR
+                </button>
+                <ul v-on:click="monitoring" class="fa-ul">
+                    <li>
+                        <span class="fa-li">
+                            <i class="fa-regular fa-square" id="check-monitor"></i>
+                        </span>Monitoriar
+                    </li>
+                </ul>
+                <div class="row gx-3">
+                    <div class="dropdown-center col">
+                        <i class="fa-solid fa-filter" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-item active" v-on:click="selectStatus" id="all">Todos</li>
+                            <li class="dropdown-item" v-on:click="selectStatus" v-for="s,i in status" v-bind:id="i">
+                                {{s}}</li>
+                        </ul>
+                    </div>
+
+                    <div class="col">
+                        <i class="fa-solid fa-arrows-rotate" v-on:click="clickRefresh"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Creado Por</th>
+                    <th>Estatus</th>
+                    <th>Message</th>
+                    <th>Fecha Inicial</th>
+                    <th>Fecha Final</th>
+                    <th>Log</th>
+                </tr>
+            </thead>
+            <tbody v-for="ev in events">
+                <tr>
+                    <td>{{ev.Id}}</td>
+                    <td>{{ev.CreatedBy}}</td>
+                    <td>{{ev.StatusText}}</td>
+                    <td>{{ev.Message}}</td>
+                    <td>{{ev.CreatedDate}}</td>
+                    <td>{{ev.FinishedDate}}</td>
+                    <td><i class="fa-solid fa-file" v-on:click="downloadLog" v-bind:id="ev.Id"></i></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="modal" tabindex="1" id="new-process">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear un nuevo proceso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="startdate" class="form-label">Fecha Inicial</label>
+                            <input type="date" id="startdate" class="form-control" v-model="startdate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="enddate" class="form-label">Fecha Inicial</label>
+                            <input type="date" id="enddate" class="form-control" v-model="enddate">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="close-modal">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="createProcess">Crear Proceso</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <script>
+        // feather.replace()
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    events: [],
+                    startdate: "",
+                    enddate: "",
+                    status: [],
+                    monitorTask: null,
+                    statusSelected: "all"
+                }
+            },
+            methods: {
+                async fetchItems(code = "all") {
+                    let request = await fetch("/infosat/fetch")
+                    if (code !== "all") {
+                        request = await fetch("/infosat/fetch?statuscode=" + code)
+                    }
+                    const response = await request.json()
+                    if (response.error) return alert(response.message)
+                    this.events = response.data
+                },
+                async getStatus() {
+                    const request = await fetch("/infosat/getstatus")
+                    const response = await request.json()
+                    if (response.error) return alert(response.message)
+                    this.status = response.data
+                },
+                async clickRefresh(it) {
+                    it.target.classList.add("fa-beat")
+                    await this.fetchItems()
+                    it.target.classList.remove("fa-beat")
+                },
+
+                async downloadLog(it) {
+                    const id = it.target.id;
+                    const request = await fetch(`/infosat/log/${id}`)
+                    const response = await request.text()
+                    const fileUrl = document.createElement("a")
+                    fileUrl.href = window.URL.createObjectURL(new Blob([response], { type: "text/plain" }))
+                    fileUrl.download = id + ".txt"
+                    fileUrl.click()
+                    fileUrl.remove()
+                },
+                async createProcess() {
+                    const request = await fetch("/infosat/newprocess", {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        method: "post",
+                        body: JSON.stringify({
+                            startdate: this.startdate,
+                            enddate: this.enddate
+                        })
+                    })
+
+                    document.getElementById("close-modal").click()
+                    this.fetchItems()
+                },
+                selectStatus(el) {
+                    this.fetchItems(el.target.id)
+                    this.statusSelected = el.target.id
+                    document.querySelectorAll(".dropdown-item").forEach(el => {
+                        el.classList.remove("active")
+                    })
+                    el.target.classList.add("active")
+                },
+                monitoring() {
+                    const _this = document.getElementById("check-monitor")
+
+                    const monitoringTask = () => this.fetchItems(this.statusSelected);
+
+                    if(_this.classList.contains("fa-square")) {
+                        _this.classList.remove("fa-square")
+                        _this.classList.add("fa-check-square")
+                        this.monitorTask = setInterval(monitoringTask, 1000)
+                        console.log("monitoring enable")
+                    } else {
+                        _this.classList.add("fa-square")
+                        _this.classList.remove("fa-check-square")
+                        clearInterval(this.monitorTask)
+                        console.log("monitoring disable")
+                    }
+                }
+            },
+            mounted() {
+                this.fetchItems()
+                this.getStatus()
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
