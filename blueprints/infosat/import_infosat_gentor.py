@@ -13,19 +13,16 @@ class ImportToInfosat:
 
     def render_html(self,id:str) -> str:
         
-        f = open("static/infosat_log_file.html","r")
+        root_path = Path(__file__).parent
+        file_path = os.path.join(root_path, "static","infosat_log_file.html")
+        f = open(file_path,"r")
         html = f.read()
         f.close()
-
-        f = open("static/email-bg.jpg","rb")
-        img = base64.b64encode(f.read())
-        f.close()
-        html = html.replace("{{img}}", img.decode("utf-8"))
         html = html.replace("{{id}}",id)
         
         return html
 
-    def run(self, logpath: str = "", startdate:str = None, enddate:str = None):
+    def run(self, logpath: str = "", startdate:str = None, enddate:str = None, userid: str = None):
 
         process = self.monitor.create("Iniciando proceso")
         self.processid = process.id
@@ -48,4 +45,6 @@ class ImportToInfosat:
         
         body = self.render_html(self.processid)
         mailer.send_email(subject=subject,bodyHtml=body,attachament=logfile)
+        
+        self.monitor.update(self.processid, 3, "Se ha completado y enviado por correo", True)
 

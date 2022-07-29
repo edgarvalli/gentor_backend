@@ -1,3 +1,4 @@
+from datetime import datetime
 from utils.sql_server import SqlResponse
 from utils.sql_server import SqlConnector
 
@@ -10,9 +11,14 @@ class MonitorStatusImport:
 
     status = ("No iniciado","Iniciado","En proceso","Finalizado","Finalizado con Error")
 
-    def __init__(self, driver:str = "guardata") -> None:
+    def __init__(self, driver:str = "guardata", userid: str = None) -> None:
         self.db = SqlConnector()
         self.db.key = driver
+
+        if userid is None:
+            self.userid = "System User"
+        else:
+            self.userid = userid
 
     def get_status_by_code(self, i: int) -> str:
         total = len(self.status)
@@ -42,7 +48,8 @@ class MonitorStatusImport:
         data = {
             "Status": 1,
             "Message": msg,
-            "Error": 0
+            "Error": 0,
+            "CreatedBy": self.userid
         }
 
 
@@ -51,11 +58,16 @@ class MonitorStatusImport:
         return self.parse_monito_response(result)
 
 
-    def update(self, uuid: str, code: int, message: str) -> MonitorResponse:
+    def update(self, uuid: str, code: int, message: str, finished: bool = False) -> MonitorResponse:
         data = {
             "Status": code,
-            "Message": message
+            "Message": message,
+            "CreatedBy": self.userid
         }
+
+        if finished:
+            data["FinishedDate"] = datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+
         r = self.db.update_by_uuid(uuid=uuid, model="Procesos", data=data)
                 
         return self.parse_monito_response(r)
