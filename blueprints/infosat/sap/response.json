@@ -1,0 +1,244 @@
+{
+  "soap-env:Envelope": {
+    "@xmlns:soap-env": "http://schemas.xmlsoap.org/soap/envelope/",
+    "soap-env:Header": null,
+    "soap-env:Body": {
+      "n0:Z_CustInvoiceQueryByElementsSimpleByConfirmation_sync": {
+        "@xmlns:n0": "http://sap.com/xi/SAPGlobal20/Global",
+        "@xmlns:prx": "urn:sap.com:proxy:H9O:/1SAI/TAS7EB776FFA2861A7D0DBE:804",
+        "Z_CustInvoice": [
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-4a062d800d99",
+            "facturaID": "FABN-105",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-563e4be10e51",
+            "facturaID": "FAOE-30",
+            "empresaID": "OEE1000000",
+            "empresaNombre": "OPERACION DE EQUIPOS DE ENERGIA",
+            "clienteID": "SST1000000",
+            "clienteNombre": "SEISA SERVICIOS Y TECNOLOGIA",
+            "facturaFecha": "2022-07-12",
+            "contabilizacionFecha": "2022-07-12",
+            "uuid": "F7482BB6-B3D2-4040-BD52-B3A5998746E3",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvNCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-56ce3b894e5a",
+            "facturaID": "FAOE-29",
+            "empresaID": "OEE1000000",
+            "empresaNombre": "OPERACION DE EQUIPOS DE ENERGIA",
+            "clienteID": "SST1000000",
+            "clienteNombre": "SEISA SERVICIOS Y TECNOLOGIA",
+            "facturaFecha": "2022-07-12",
+            "contabilizacionFecha": "2022-07-12",
+            "uuid": "523B166E-FCC5-A343-9253-41F7820D1598",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvNCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-575cba3c4e65",
+            "facturaID": "FAGE-85",
+            "empresaID": "GEN1000000",
+            "empresaNombre": "GENTOR",
+            "clienteID": "CN10000038",
+            "clienteNombre": "IMPULSORA QUERETANA DE INMUEBLES",
+            "facturaFecha": "2022-07-12",
+            "contabilizacionFecha": "2022-07-12",
+            "uuid": "3DC4A93B-2B6A-D840-B65D-D162BED14B63",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvNCIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-bd1315a31389",
+            "facturaID": "FABN-106",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-d35641d2f498",
+            "facturaID": "FABN-107",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-e0daaad6d578",
+            "facturaID": "FABN-108",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80d9-ee0b3a1495f9",
+            "facturaID": "FABN-109",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80f4-a3c9fb6cde16",
+            "facturaID": "FAOP-17",
+            "empresaID": "OPE1000000",
+            "empresaNombre": "OPERADORA DE PLANTAS DE ENERGIA",
+            "clienteID": "CN10000038",
+            "clienteNombre": "IMPULSORA QUERETANA DE INMUEBLES",
+            "facturaFecha": "2022-07-14",
+            "contabilizacionFecha": "2022-07-14",
+            "uuid": "FAD4286A-526E-864E-8026-3F33C9C07428"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-80f4-a63c865a1e29",
+            "facturaID": "FAOP-15",
+            "empresaID": "OPE1000000",
+            "empresaNombre": "OPERADORA DE PLANTAS DE ENERGIA",
+            "clienteID": "CN10000038",
+            "clienteNombre": "IMPULSORA QUERETANA DE INMUEBLES",
+            "facturaFecha": "2022-07-14",
+            "contabilizacionFecha": "2022-07-14",
+            "uuid": "6096B4B0-82FF-6443-8FBB-983A1FD02C70"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-83d7-7404916d5fb3",
+            "facturaID": "ANTSE-6",
+            "empresaID": "SEI1000000",
+            "empresaNombre": "SISTEMAS DE ENERGIA INTERNACIONAL",
+            "clienteID": "CN10000027",
+            "clienteNombre": "APSA ELECTRONICA, S.A. DE C.V.",
+            "facturaFecha": "2022-07-28",
+            "contabilizacionFecha": "2022-07-28"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1edd-84bf-27489c6d0462",
+            "facturaID": "FASCG-11",
+            "empresaID": "SCG1000000",
+            "empresaNombre": "SERVICIOS CORPORATIVOS GENTOR",
+            "clienteID": "GN10000060",
+            "clienteNombre": "DHL EXPRESS MEXICO, S.A. DE C.V.",
+            "facturaFecha": "2022-07-31",
+            "contabilizacionFecha": "2022-07-31",
+            "documentoID": "FASCG-11",
+            "fechaTimbrado": "00:00:00",
+            "moneda": "MXN",
+            "monedaName": "Mexican Peso",
+            "subtotal": { "@currencyCode": "MXN", "#text": "15000.0" },
+            "iva": { "@currencyCode": "MXN", "#text": "2400.0" },
+            "total": { "@currencyCode": "MXN", "#text": "17400.0" },
+            "tipoCambio": "1.0",
+            "estatus": "Contabilizada",
+            "observaciones": "Obs"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1eed-80d7-70afe5439883",
+            "facturaID": "FABN-104",
+            "empresaID": "BNL1000000",
+            "empresaNombre": "SSNL SERVICIOS SUSTENTABLES NL",
+            "clienteID": "CN10000006",
+            "clienteNombre": "GUANTES INDUSTRIALES RODRIGUEZ",
+            "facturaFecha": "2022-07-13",
+            "contabilizacionFecha": "2022-07-13",
+            "uuid": "0C47F92B-3BCB-0846-9F3B-F8F8784B18DD",
+            "base64XML": "77u/PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxjZmRpOkNvbXByb2JhbnRlIHhtbG5zOmNmZGk9Imh0dHA6Ly93d3cuc2F0LmdvYi5teC9jZmQvMyIgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hNTFNjaGVtYS1pbnN0YW5jZSIgeHNpOnNjaGVtYUxvY2F0aW9uPSJodHRwOi8vd3d3LnNhdC5"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1eed-80ef-fa85fecb027f",
+            "facturaID": "FAOP-14",
+            "empresaID": "OPE1000000",
+            "empresaNombre": "OPERADORA DE PLANTAS DE ENERGIA",
+            "clienteID": "CN10000038",
+            "clienteNombre": "IMPULSORA QUERETANA DE INMUEBLES",
+            "facturaFecha": "2022-07-14",
+            "contabilizacionFecha": "2022-07-14",
+            "uuid": "DDBE18CF-33FD-0F45-B229-3989223BD45E"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1eed-818a-67b5559db6ab",
+            "facturaID": "FAOP-16",
+            "empresaID": "OPE1000000",
+            "empresaNombre": "OPERADORA DE PLANTAS DE ENERGIA",
+            "clienteID": "CN10000038",
+            "clienteNombre": "IMPULSORA QUERETANA DE INMUEBLES",
+            "facturaFecha": "2022-07-14",
+            "contabilizacionFecha": "2022-07-14",
+            "uuid": "E28D4359-F789-E24F-8021-6DBC471D16B3"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1eed-84be-5dbe1d4e1a22",
+            "facturaID": "FASCG-9",
+            "empresaID": "SCG1000000",
+            "empresaNombre": "SERVICIOS CORPORATIVOS GENTOR",
+            "clienteID": "GN10000060",
+            "clienteNombre": "DHL EXPRESS MEXICO, S.A. DE C.V.",
+            "facturaFecha": "2022-07-29",
+            "contabilizacionFecha": "2022-07-29",
+            "documentoID": "FASCG-9",
+            "fechaTimbrado": "00:00:00",
+            "moneda": "MXN",
+            "monedaName": "Mexican Peso",
+            "subtotal": { "@currencyCode": "MXN", "#text": "15000.0" },
+            "iva": { "@currencyCode": "MXN", "#text": "2400.0" },
+            "total": { "@currencyCode": "MXN", "#text": "17400.0" },
+            "tipoCambio": "1.0",
+            "estatus": "Contabilizada",
+            "observaciones": "Obs"
+          },
+          {
+            "SAP_UUID": "fa163ea9-86dc-1eed-84be-bce4bac25e58",
+            "facturaID": "FASCG-10",
+            "empresaID": "SCG1000000",
+            "empresaNombre": "SERVICIOS CORPORATIVOS GENTOR",
+            "clienteID": "GN10000060",
+            "clienteNombre": "DHL EXPRESS MEXICO, S.A. DE C.V.",
+            "facturaFecha": "2022-07-31",
+            "contabilizacionFecha": "2022-07-31",
+            "documentoID": "FASCG-10",
+            "fechaTimbrado": "00:00:00",
+            "moneda": "MXN",
+            "monedaName": "Mexican Peso",
+            "subtotal": { "@currencyCode": "MXN", "#text": "15000.0" },
+            "iva": { "@currencyCode": "MXN", "#text": "2400.0" },
+            "total": { "@currencyCode": "MXN", "#text": "17400.0" },
+            "tipoCambio": "1.0",
+            "estatus": "Contabilizada",
+            "observaciones": "Obs"
+          }
+        ],
+        "ProcessingConditions": {
+          "ReturnedQueryHitsNumberValue": "17",
+          "MoreHitsAvailableIndicator": "false"
+        },
+        "Log": {
+          "MaximumLogItemSeverityCode": "1",
+          "Item": {
+            "TypeID": "009(/CSG_RUNTIME/)",
+            "SeverityCode": "1",
+            "Note": "Query returned 17 records"
+          }
+        }
+      }
+    }
+  },
+  "error": false
+}

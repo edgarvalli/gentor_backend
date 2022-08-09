@@ -7,7 +7,7 @@
                  <SelectionByfacturaFecha>
                     <!--Optional:-->
                     <InclusionExclusionCode>I</InclusionExclusionCode>
-                    <IntervalBoundaryTypeCode>1</IntervalBoundaryTypeCode>
+                    <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
                     <!--Optional:-->
                     <LowerBoundaryfacturaFecha>{{startDate}}</LowerBoundaryfacturaFecha>
                     <!--Optional:-->
