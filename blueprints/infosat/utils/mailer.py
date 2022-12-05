@@ -6,8 +6,8 @@ from email.mime.multipart import MIMEMultipart
 
 
 def send_email(subject='', bodyHtml='', attachament=None):
-    sender = "soporte@gentor.com"
-    password = "Tab60859"
+    sender = "abc_sap@gentor.com"
+    password = "Juz90709"
     to = "Edgar Valli <evalli@gentor.com>"
 
     message = MIMEMultipart('Backup')

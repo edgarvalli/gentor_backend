@@ -3,8 +3,8 @@
     <soapenv:Body>
         <glob:Z_CustInvoiceQueryByElementsSimpleByRequest_sync>
             <Z_CustInvoiceSimpleSelectionBy>
-                
-                 <SelectionByfacturaFecha>
+
+                <SelectionByfacturaFecha>
                     <!--Optional:-->
                     <InclusionExclusionCode>I</InclusionExclusionCode>
                     <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
@@ -12,10 +12,16 @@
                     <LowerBoundaryfacturaFecha>{{startDate}}</LowerBoundaryfacturaFecha>
                     <!--Optional:-->
                     <UpperBoundaryfacturaFecha>{{endDate}}</UpperBoundaryfacturaFecha>
-                 </SelectionByfacturaFecha>
-     
-     
+                </SelectionByfacturaFecha>
+
+
             </Z_CustInvoiceSimpleSelectionBy>
+            <ProcessingConditions>
+                <!--Optional:-->
+                <QueryHitsMaximumNumberValue>10000</QueryHitsMaximumNumberValue>
+                <QueryHitsUnlimitedIndicator>false</QueryHitsUnlimitedIndicator>
+                <!--Optional:-->
+            </ProcessingConditions>
         </glob:Z_CustInvoiceQueryByElementsSimpleByRequest_sync>
     </soapenv:Body>
 </soapenv:Envelope>

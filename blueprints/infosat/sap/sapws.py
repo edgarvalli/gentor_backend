@@ -10,7 +10,11 @@ class SapWS:
     endpoint: dict = {
         "customer": {
             "dev": "https://my351064.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_custinvoice?sap-vhost=my351064.sapbydesign.com",
-            "prod": ""
+            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_custinvoice?sap-vhost=my353505.sapbydesign.com"
+        },
+        "supplier": {
+            "dev": "https://my351064.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my351064.sapbydesign.com",
+            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my353505.sapbydesign.com"
         }
     }
 
@@ -20,10 +24,12 @@ class SapWS:
 
     def __init__(self, mode: str = "dev") -> None:
         self.mode = mode
+        if mode == "prod":
+            self.username = "_GENTOR_INT"
+            self.password = "G3nt0r01"
 
     def render_xml_request(self, xml_name, data: dict):
-        xml_path: str = pathlib.Path.joinpath(
-            self.working_path, "request_xml", f"{xml_name}.xml")
+        xml_path: str = pathlib.Path.joinpath(self.working_path, "request_xml", f"{xml_name}.xml")
         xml = open(xml_path, "r")
         xml_content = xml.read()
         xml.close()
@@ -47,9 +53,6 @@ class SapWS:
                 resp_json = xmltodict.parse(
                     r.text, namespace_separator="@", encoding="utf-8")
                 resp_json['error'] = False
-                f = open("response.json", "w")
-                f.write(json.dumps(resp_json))
-                f.close()
                 return resp_json
             except:
                 message = re.search("<h1>(.*?)</h1>", r.text).group()
@@ -64,20 +67,18 @@ class SapWS:
                 "status_code": r.status_code
             }
 
-    def get_customer_invoice_by_id(self, invoiceID: str):
 
-        xml_content = self.render_xml_request(
-            "sap_invoices_customer_by_id", {"invoiceID": invoiceID})
-        r = self.fetch(xml_content)
-        return r
-
-    def get_customer_invoice_by_date(self, startdate: str, enddate: str):
+    def get_invoice_by_date(self, module: str = "customer", startdate: str ="", enddate: str =""):
         data = {
             "startDate": startdate,
             "endDate": enddate
         }
-        xml_content = self.render_xml_request(
-            "sap_invoices_customer_by_date", data=data)
-        # print(xml_content)
-        r = self.fetch("customer",xml_content)
+        xml_content = self.render_xml_request(f"sap_invoices_{module}_by_date", data=data)
+        r = self.fetch(module,xml_content)
         return r
+    
+    def read_invoice_by_id(self, module:str = "customer", invoiceID:str = ""):
+        xml_content = self.render_xml_request(f"sap_invoices_{module}_read_by_id", data={"invoiceID": invoiceID})
+        r = self.fetch(module=module, body=xml_content)
+        return r
+

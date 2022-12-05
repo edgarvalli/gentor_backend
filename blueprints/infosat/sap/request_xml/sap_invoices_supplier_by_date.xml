@@ -1,0 +1,24 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
+    <soapenv:Header />
+    <soapenv:Body>
+        <glob:Z_SuppInvoiceQueryByElementsSimpleByRequest_sync>
+            <Z_SuppInvoiceSimpleSelectionBy>
+                <SelectionByfacturaFecha>
+                    <!--Optional:-->
+                    <InclusionExclusionCode>I</InclusionExclusionCode>
+                    <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
+                    <!--Optional:-->
+                    <LowerBoundaryfacturaFecha>{{startDate}}</LowerBoundaryfacturaFecha>
+                    <!--Optional:-->
+                    <UpperBoundaryfacturaFecha>{{endDate}}</UpperBoundaryfacturaFecha>
+                </SelectionByfacturaFecha>
+            </Z_SuppInvoiceSimpleSelectionBy>
+            <ProcessingConditions>
+                <!--Optional:-->
+                <QueryHitsMaximumNumberValue>10000</QueryHitsMaximumNumberValue>
+                <QueryHitsUnlimitedIndicator>false</QueryHitsUnlimitedIndicator>
+                <!--Optional:-->
+            </ProcessingConditions>
+        </glob:Z_SuppInvoiceQueryByElementsSimpleByRequest_sync>
+    </soapenv:Body>
+</soapenv:Envelope>

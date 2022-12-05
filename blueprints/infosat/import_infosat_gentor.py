@@ -2,6 +2,7 @@ import os
 from utils import mailer
 from pathlib import Path
 from contpaqi.import_from_contipaq import ImportFromContpaqi
+from sap.app import SapImport
 from utils.monitor_status_import import MonitorStatusImport
 
 
@@ -31,13 +32,18 @@ class ImportToInfosat:
         process = self.monitor.create("Iniciando proceso")
         self.processid = process.id
 
-        linkcontpaqi = ImportFromContpaqi()
-        linkcontpaqi.processid = self.processid
+        # linkcontpaqi = ImportFromContpaqi()
+        # linkcontpaqi.processid = self.processid
 
-        linkcontpaqi.startdate = startdate
-        linkcontpaqi.enddate = enddate
+        # linkcontpaqi.startdate = startdate
+        # linkcontpaqi.enddate = enddate
 
-        self.log += linkcontpaqi.run(display_console=display, userid=userid)
+        # self.log += linkcontpaqi.run(display_console=display, userid=userid)
+
+
+        sapimport = SapImport(startdate=startdate, enddate=enddate)
+        
+        self.log += sapimport.run()
 
         logfile = os.path.join(logpath,self.processid + ".txt")
 
