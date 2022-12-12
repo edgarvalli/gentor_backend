@@ -1,9 +1,9 @@
 import os
 from utils import mailer
 from pathlib import Path
-from contpaqi.import_from_contipaq import ImportFromContpaqi
 from sap.app import SapImport
 from utils.monitor_status_import import MonitorStatusImport
+from contpaqi.import_from_contipaq import ImportFromContpaqi
 
 
 class ImportToInfosat:
@@ -32,16 +32,17 @@ class ImportToInfosat:
         process = self.monitor.create("Iniciando proceso")
         self.processid = process.id
 
-        # linkcontpaqi = ImportFromContpaqi()
-        # linkcontpaqi.processid = self.processid
+        linkcontpaqi = ImportFromContpaqi()
+        linkcontpaqi.processid = self.processid
 
-        # linkcontpaqi.startdate = startdate
-        # linkcontpaqi.enddate = enddate
+        linkcontpaqi.startdate = startdate
+        linkcontpaqi.enddate = enddate
 
-        # self.log += linkcontpaqi.run(display_console=display, userid=userid)
+        self.log += linkcontpaqi.run(display_console=display, userid=userid)
 
-
+        self.monitor.update(self.processid,2, "Trabajando con información del SAP")
         sapimport = SapImport(startdate=startdate, enddate=enddate)
+        sapimport.processid = self.processid
         
         self.log += sapimport.run()
 

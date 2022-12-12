@@ -38,7 +38,6 @@ class SapWS:
         for key in keys:
             if key in data:
                 xml_content = xml_content.replace("{{" + key + "}}", data[key])
-
         return xml_content
 
     def fetch(self, module: str, body: str):

@@ -25,14 +25,14 @@ def send_email(subject='', bodyHtml='', attachament=None):
             part = MIMEBase("application", "octet-stream")
             part.set_payload(f.read())
 
-    encoders.encode_base64(part)
+        encoders.encode_base64(part)
 
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
+        part.add_header(
+            "Content-Disposition",
+            f"attachment; filename= {filename}",
+        )
 
-    message.attach(part)
+        message.attach(part)
 
     server = smtplib.SMTP(host="smtp.office365.com", port=587)
     server.starttls()

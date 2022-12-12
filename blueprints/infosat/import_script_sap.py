@@ -8,35 +8,37 @@ def last_day_of_month(any_day):
     return next_month - datetime.timedelta(days=next_month.day)
 
 year = 2020
-month = 10
+month = 9
 
 log = "Iniciando proceso de sincronización SAP - Infosat\n"
+print(log)
+while month <= 12:
 
-# while month <= 12:
+    nmonth = "{:02d}".format(month)
+    startdate = f"{year}-{nmonth}-01"
+    enddate = last_day_of_month(datetime.date(year, month, 1)).strftime("%Y-%m-%d")
 
-#     nmonth = "{:02d}".format(month)
-#     startdate = f"{year}-{nmonth}-01"
+    print(f"Obteniendo facturas del rango {startdate} al {enddate}")
+    
+    sapimport = SapImport(startdate=startdate, enddate=enddate)
+    log += sapimport.run()
 
-#     enddate = last_day_of_month(datetime.date(year, month, 1)).strftime("%Y-%m-%d")
-#     sapimport = SapImport(startdate=startdate, enddate=enddate)
-#     log += sapimport.run()
+    # print(log)
 
-#     # print(log)
+    if year == 2022 and month == 12:
+        break
 
-#     if year == 2022 and month == 12:
-#         break
+    if month == 12:
+        year += 1
+        month = 1
+    else:
+        month += 1
 
-#     if month == 12:
-#         year += 1
-#         month = 1
-#     else:
-#         month += 1
+# sapimport = SapImport(startdate='2017-01-01',enddate='2022-12-31')
 
-sapimport = SapImport(startdate='2017-01-01',enddate='2022-12-31')
-
-print(sapimport.startdate)
-log = sapimport.run()
-f = open("log.txt", "w")
-f.write(log)
-f.close()
-print("Finish")
+# print(sapimport.startdate)
+# log = sapimport.run()
+# f = open("log.txt", "w")
+# f.write(log)
+# f.close()
+# print("Finish")

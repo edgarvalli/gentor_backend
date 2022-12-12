@@ -1,8 +1,9 @@
 import base64,re
 from .sapws import SapWS
-from utils import helpers, sql_server as sqlserver
-from datetime import datetime
+from utils import sql_server as sqlserver
+from datetime import datetime, timedelta
 import xml.etree.ElementTree as elementTree
+from utils.monitor_status_import import MonitorStatusImport
 
 
 class Cfdi:
@@ -21,15 +22,19 @@ class SapImport:
     startdate = "2017-01-01"
     enddate = "2022-12-30"
     sql = sqlserver.SqlConnector()
+    monitor = MonitorStatusImport()
+    processid = 0
 
     def __init__(self, startdate:str = None, enddate:str = None) -> None:
+        _enddate = datetime.now()
+
         if startdate is None:
-            self.startdate = helpers.obtener_ultima_fecha_factura("")
+            self.startdate = (_enddate - timedelta(1)).strftime("%Y-%m-%d")
         else:
             self.startdate = startdate
         
         if enddate is None:
-            self.enddate = datetime.now().strftime("%Y-%m-%d")
+            self.enddate = _enddate.strftime("%Y-%m-%d")
         else:
             self.enddate = enddate
 
@@ -156,6 +161,7 @@ class SapImport:
     def get_customer_invoices(self):
         logcontent = ""
         response = sap.get_invoice_by_date(module="customer",startdate=self.startdate, enddate=self.enddate)
+        print(response)
         if response["error"]:
             return response["message"]
             
@@ -188,23 +194,30 @@ class SapImport:
                 cfdi = self.get_xml_from_customer_invoice(xml)
 
                 msg = ""
+                insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
                 if cfdi is not None:
                     query = self.build_query(RfcEmpresa=rfcemisor, cfdi=cfdi)
                     #Continuar aqui para insertar en base de datos
                     
                     self.sql.commit(query=query)
 
+
+                    line = f"[{insertedtime}]: Empresa SAP - {empresaID} // Clientes// "
+                    line += f"UUID - {satuuid} // {msg}"
+                    self.monitor.update(self.processid, 2, line)
+                    logcontent += line + "\n"
+
                 else:
-                    msg = "No tiene XML - no se guardo CFDI"
+                    msg = f"[{insertedtime}]: {inv['facturaID']} // {inv['empresaID']} // No tiene XML - no se guardo CFDI"
+                    self.monitor.update(self.processid, 2, msg)
+                    logcontent += msg + "\n"
                 
-                insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                logcontent += f"[{insertedtime}]: Empresa SAP - {empresaID} // Clientes// "
-                logcontent += f"UUID - {satuuid} // {msg} \n"
 
             return logcontent
 
     def get_supplier_invoices(self):
-        log = ""
+        logcontent = ""
         response = sap.get_invoice_by_date(module="supplier",startdate=self.startdate, enddate=self.enddate)
         if response["error"]:
             return response["message"]
@@ -218,7 +231,6 @@ class SapImport:
                     invoices = [invoices]
             else:
                 invoices = []
-            
             
             total_invoice = len(invoices)
             if total_invoice == 0:
@@ -238,27 +250,31 @@ class SapImport:
                 cfdi = self.get_xml_from_supplier_invoice(xml)
 
                 msg = ""
+                insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                 if cfdi is None:
-                    msg = "No tiene XML - no se guardo CFDI"
-                
+                    msg = f"[{insertedtime}]: {inv['facturaID']} // {inv['empresaID']} // No tiene XML - no se guardo CFDI"
+                    self.monitor.update(self.processid, 2, msg)
+                    logcontent += msg + "\n"
                 else:
                     query = self.build_query(RfcEmpresa=rfcreceptor, cfdi=cfdi)
                     #Continuar aqui para insertar en base de datos
 
-                    self.sql.commit(query=query)
+                    self.sql.commit(query=query)             
                     
-                    msg = f"CFDI guardado en {cfdi.rfcreceptor}"
-                
-                insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                log += f"[{insertedtime}]: Empresa SAP - {empresaID} // Proveedores // "
-                log += f"UUID - {satuuid} // {msg} \n"
+                    line = f"[{insertedtime}]: Empresa SAP - {empresaID} // Proveedores // "
+                    line += f"UUID - {satuuid} // {msg}"
 
-            return log
+                    self.monitor.update(self.processid, 2, line)
+                    logcontent += line + "\n"
+
+            return logcontent
 
     def run(self):
+        self.monitor.update(self.processid, 2, "Obteniendo datos de factura de clientes")
         logs = self.get_customer_invoices()
         print("\n")
+        self.monitor.update(self.processid, 2, "Obteniendo datos de factura de proveedores")
         logs += self.get_supplier_invoices()
 
         return logs

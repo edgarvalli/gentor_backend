@@ -1,0 +1,19 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <glob:CustomerInvoiceByElementsQuery_sync>
+        <CustomerInvoiceSelectionByElements>
+            <SelectionByDate>
+                <!--Optional:-->
+                <InclusionExclusionCode>I</InclusionExclusionCode>
+                <!--Optional:-->
+                <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
+                <!--Optional:-->
+                <LowerBoundaryCustomerInvoiceDate>{{startdate}}</LowerBoundaryCustomerInvoiceDate>
+                <!--Optional:-->
+                <UpperBoundaryCustomerInvoiceDate>{{enddate}}</UpperBoundaryCustomerInvoiceDate>
+             </SelectionByDate> 
+        </CustomerInvoiceSelectionByElements>
+      </glob:CustomerInvoiceByElementsQuery_sync>
+   </soapenv:Body>
+</soapenv:Envelope>

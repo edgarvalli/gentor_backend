@@ -9,9 +9,9 @@
                <InclusionExclusionCode>I</InclusionExclusionCode>
                <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
                <!--Optional:-->
-               <LowerBoundaryfacturaFecha>{{startDate}}</LowerBoundaryfacturaFecha>
+               <LowerBoundaryfacturaFecha>2020-09-01</LowerBoundaryfacturaFecha>
                <!--Optional:-->
-               <UpperBoundaryfacturaFecha>{{endDate}}</UpperBoundaryfacturaFecha>
+               <UpperBoundaryfacturaFecha>2022-12-31</UpperBoundaryfacturaFecha>
             </SelectionByfacturaFecha>
          </Z_CustInvoiceSimpleSelectionBy>
          <ProcessingConditions>

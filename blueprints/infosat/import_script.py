@@ -1,5 +1,6 @@
 import os,sys
 from pathlib import Path
+from sap.app import SapImport
 from dateutil.parser import parse
 from import_infosat_gentor import ImportToInfosat
 
@@ -48,4 +49,6 @@ else:
         exit()
     
     p.run(logpath=logpath, startdate=startdate, enddate=enddate, userid=userid, display=False)
+    sapimport = SapImport(startdate=startdate,enddate=enddate)
+    sapimport.run()
     
