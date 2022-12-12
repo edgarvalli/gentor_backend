@@ -189,7 +189,7 @@ def build_query(RfcEmpresa:str, cfdi: Cfdi):
 # Script #
 ##################################################################################################################
 
-jsonfile = open("facturas/invoices.json","r", encoding="utf-8")
+jsonfile = open("facturas/customer_invoices.json","r", encoding="utf-8")
 invoices: list = json.load(jsonfile)
 jsonfile.close()
 
