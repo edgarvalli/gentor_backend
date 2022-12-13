@@ -2,6 +2,7 @@ import requests, xmltodict, datetime, json, re, base64
 import xml.etree.ElementTree as elementTree
 from requests.auth import HTTPBasicAuth
 from utils import mailer
+from utils.sql_server import SqlConnector
 
 
 ##################################################################################################################
@@ -9,13 +10,13 @@ from utils import mailer
 ##################################################################################################################
 
 class Cfdi:
-    xml:str
-    serie:str
-    folio:str
-    rfcemisor:str
-    rfcreceptor:str
-    uuid:str
-    fecha:str
+    xml:str = ""
+    serie:str = ""
+    folio:str = ""
+    rfcemisor:str = ""
+    rfcreceptor:str = ""
+    uuid:str = ""
+    fecha:str = ""
 
     def toJSON(self):
         return {
@@ -40,9 +41,14 @@ def fetch(xml=""):
     r = requests.post(endpoint, data=xml, headers=headers, auth=auth)
     return r
 
-def get_invoices_from_sap(startdate="", enddate="") -> dict:
+def fetchsupplier(xml=""):
+    endpoint = "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my353505.sapbydesign.com"
+    auth = HTTPBasicAuth(username='_GENTOR_INT', password='G3nt0r01')
+    headers = { "Content-Type": "text/xml; charset=utf-8" }
+    r = requests.post(endpoint, data=xml, headers=headers, auth=auth)
+    return r
 
-    
+def get_invoices_from_sap(startdate="", enddate="") -> dict:
 
     xml = open("xml/querycustomerinvoice.xml","r")
     body = xml.read()
@@ -66,6 +72,16 @@ def read_invoice_by_id(id=""):
 
     return data
 
+def read_invoice_supplier_by_id(id=""):
+    xml = open('xml/querysupplierinvoicebyid.xml','r')
+    body = xml.read()
+    xml.close()
+    body = body.replace("{{invoiceID}}",id)
+    r = fetchsupplier(body)
+    data = xmltodict.parse(r.text)
+
+    return data
+
 
 def last_day_of_month(any_day):
     # The day 28 exists in every month. 4 days later, it's always next month
@@ -82,6 +98,26 @@ def parse_data_from_sap(data: dict):
                 data = data["n0:Z_CustInvoiceReadByIDResponse_sync"]
                 if "Z_CustInvoice" in data:
                     return data["Z_CustInvoice"]
+                else:
+                    return None
+            else:
+                return None
+        else:
+            return None
+    else:
+        return None
+
+def parse_data_supplier_from_sap(invoice: dict) -> dict:
+
+    if "soap-env:Envelope" in invoice:
+        invoice = invoice["soap-env:Envelope"]
+        if "soap-env:Body" in invoice:
+            invoice = invoice["soap-env:Body"]
+            if "n0:Z_SuppInvoiceReadByIDResponse_sync" in invoice:
+                invoice = invoice["n0:Z_SuppInvoiceReadByIDResponse_sync"]
+                if "Z_SuppInvoice" in invoice:
+                    invoice = invoice["Z_SuppInvoice"]
+                    return invoice
                 else:
                     return None
             else:
@@ -189,34 +225,79 @@ def build_query(RfcEmpresa:str, cfdi: Cfdi):
 # Script #
 ##################################################################################################################
 
-jsonfile = open("facturas/customer_invoices.json","r", encoding="utf-8")
+jsonfile = open("facturas/invoices.json","r", encoding="utf-8")
 invoices: list = json.load(jsonfile)
 jsonfile.close()
 
 _invoices = []
 
+sql = SqlConnector()
+
+reportfile = open("report_invoices_guardata.csv","w")
+reportfile.write("Empresa,Id,Tipo,XML\n")
+reportfile.close()
+
 for inv in invoices:
     print(f"Trabajando en {inv['Empresa']} - {inv['Id']}")
 
     cfdi = Cfdi()
+    id = str(inv['Id'])
+    if inv["Tipo"] == "customer":
+        data = read_invoice_by_id(id)
+        data = parse_data_from_sap(data)
 
-    data = read_invoice_by_id(inv['Id'])
-    data = parse_data_from_sap(data)
+        if data is not None:
+            if "base64String" in data:
+                cfdi = parse_xml(data)
+                print(cfdi.xml)
+                query = build_query(cfdi.rfcemisor, cfdi=cfdi)
+                sql.commit(query=query)
 
-    if data is not None:
-        if "base64String" in data:
-            cfdi = parse_xml(data)
-        else:
-            print(f"La factura {inv['Id']} no cuenta con XML")
-            cfdi.xml = "No tiene XML"
-            cfdi.rfcemisor = "rfcemisor"
-            cfdi.rfcreceptor = "rfcreceptor"
-            cfdi.serie = inv['Id']
-            cfdi.folio = inv['Id']
-            cfdi.fecha = 'fecha'
-            cfdi.uuid = inv['Empresa']
+            else:
+                print(f"La factura {id} no cuenta con XML")
+                cfdi.xml = "No tiene XML"
+                cfdi.rfcemisor = "rfcemisor"
+                cfdi.rfcreceptor = "rfcreceptor"
+                cfdi.serie = inv['Id']
+                cfdi.folio = inv['Id']
+                cfdi.fecha = 'fecha'
+                cfdi.uuid = inv['Empresa']
+    else:
 
-        _invoices.append(cfdi.toJSON())
+        data = read_invoice_supplier_by_id(id)
+        data = parse_data_supplier_from_sap(data)
+
+        if data is not None:
+            if "base64String" in data:
+                cfdi: Cfdi = parse_xml(data)
+                query = build_query(cfdi.rfcreceptor, cfdi)
+                sql.commit(query=query)
+            else:
+                print(f"La factura {inv['Id']} no cuenta con XML")
+                cfdi.xml = "No tiene XML"
+                cfdi.rfcemisor = "rfcemisor"
+                cfdi.rfcreceptor = "rfcreceptor"
+                cfdi.serie = inv['Id']
+                cfdi.folio = inv['Id']
+                cfdi.fecha = 'fecha'
+                cfdi.uuid = inv['Empresa']
+    
+    reportfile = open("report_invoices_guardata.csv","a")
+    
+    empresa = inv["Empresa"]
+
+    if "," in empresa:
+        empresa = f'"{empresa}"'
+
+    row = f"{empresa},{inv['Id']},{inv['Tipo']}"
+    
+    if cfdi.xml != "":
+        row += f",{cfdi.xml}"
+    
+    reportfile.write(row + "\n")
+    reportfile.close()
+
+    _invoices.append(cfdi.toJSON())
 
 jsondata = json.dumps(_invoices, indent=4)
 

@@ -1,0 +1,13 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <glob:Z_SuppInvoiceReadByIDQuery_sync>
+         <Z_SuppInvoice>
+            <!--Optional:-->
+            <!-- <SAP_UUID>?</SAP_UUID> -->
+            <!--Optional:-->
+            <facturaID>{{invoiceID}}</facturaID>
+         </Z_SuppInvoice>
+      </glob:Z_SuppInvoiceReadByIDQuery_sync>
+   </soapenv:Body>
+</soapenv:Envelope>
