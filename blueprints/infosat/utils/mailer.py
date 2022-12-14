@@ -6,14 +6,14 @@ from email.mime.multipart import MIMEMultipart
 
 
 def send_email(subject='', bodyHtml='', attachament=None):
-    sender = "abc_sap@gentor.com"
-    password = "Juz90709"
-    to = "Edgar Valli <evalli@gentor.com>"
+    sender = "gentor.ti.soporte@gmail.com"
+    password = "ceznatsfycavpymo"
+    to = "evalli@gentor.com"
 
     message = MIMEMultipart('Backup')
     message['Subject'] = subject
     message['From'] = sender
-    message['To'] = to
+    message['To'] = f"Notificacion SAP-Guardata <{to}>"
 
     part = MIMEText(bodyHtml, 'html')
     message.attach(part)
@@ -34,7 +34,10 @@ def send_email(subject='', bodyHtml='', attachament=None):
 
         message.attach(part)
 
-    server = smtplib.SMTP(host="smtp.office365.com", port=587)
+    server = smtplib.SMTP(host="smtp.gmail.com", port=587)
+    server.ehlo()
     server.starttls()
     server.login(sender, password)
     server.sendmail(sender, to, message.as_string())
+    print(server.ehlo_msg)
+    server.quit()

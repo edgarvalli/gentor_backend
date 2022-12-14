@@ -230,71 +230,74 @@ def set_row_report(row=""):
 # Script #
 ##################################################################################################################
 
-jsonfile = open("facturas/invoices.json","r", encoding="utf-8")
-invoices: list = json.load(jsonfile)
-jsonfile.close()
+try:
+    jsonfile = open("facturas/invoices.json","r", encoding="utf-8")
+    invoices: list = json.load(jsonfile)
+    jsonfile.close()
 
-sql = SqlConnector()
+    sql = SqlConnector()
 
-reportfile = open("report_invoices_guardata.csv","w")
-reportfile.write("Empresa,Id,Tipo,XML\n")
-reportfile.close()
+    reportfile = open("report_invoices_guardata.csv","w")
+    reportfile.write("Empresa,Id,Tipo,XML\n")
+    reportfile.close()
 
-for inv in invoices:
-    print(f"Trabajando en {inv['Empresa']} - {inv['Id']}")
+    for inv in invoices:
+        print(f"Trabajando en {inv['Empresa']} - {inv['Id']}")
 
-    cfdi = Cfdi()
-    id = str(inv['Id'])
-    empresa = inv["Empresa"]
+        cfdi = Cfdi()
+        id = str(inv['Id'])
+        empresa = inv["Empresa"]
 
-    row = f"{empresa},{inv['Id']},{inv['Tipo']}"
+        row = f"{empresa},{inv['Id']},{inv['Tipo']}"
 
-    if inv["Tipo"] == "customer":
-        data = read_invoice_by_id(id)
-        data = parse_data_from_sap(data)
+        if inv["Tipo"] == "customer":
+            data = read_invoice_by_id(id)
+            data = parse_data_from_sap(data)
 
-        if data is not None:
-            if "base64String" in data:
-                cfdi = parse_xml(data)
+            if data is not None:
+                if "base64String" in data:
+                    cfdi = parse_xml(data)
 
-                if cfdi is not None:
-                    row += "," + cfdi.xml
-                    query = build_query(cfdi.rfcemisor, cfdi=cfdi)
-                    sql.commit(query=query)
+                    if cfdi is not None:
+                        row += "," + cfdi.xml
+                        query = build_query(cfdi.rfcemisor, cfdi=cfdi)
+                        sql.commit(query=query)
 
-            else:
-                print(f"La factura {id} no cuenta con XML")
-                cfdi.xml = "No tiene XML"
-                cfdi.rfcemisor = "rfcemisor"
-                cfdi.rfcreceptor = "rfcreceptor"
-                cfdi.serie = inv['Id']
-                cfdi.folio = inv['Id']
-                cfdi.fecha = 'fecha'
-                cfdi.uuid = inv['Empresa']
-    else:
+                else:
+                    print(f"La factura {id} no cuenta con XML")
+                    cfdi.xml = "No tiene XML"
+                    cfdi.rfcemisor = "rfcemisor"
+                    cfdi.rfcreceptor = "rfcreceptor"
+                    cfdi.serie = inv['Id']
+                    cfdi.folio = inv['Id']
+                    cfdi.fecha = 'fecha'
+                    cfdi.uuid = inv['Empresa']
+        else:
 
-        data = read_invoice_supplier_by_id(id)
-        data = parse_data_supplier_from_sap(data)
+            data = read_invoice_supplier_by_id(id)
+            data = parse_data_supplier_from_sap(data)
 
-        if data is not None:
-            if "base64String" in data:
-                cfdi: Cfdi = parse_xml(data)
-                if cfdi is not None:
-                    row += "," + cfdi.xml
-                    query = build_query(cfdi.rfcreceptor, cfdi)
-                    sql.commit(query=query)
+            if data is not None:
+                if "base64String" in data:
+                    cfdi: Cfdi = parse_xml(data)
+                    if cfdi is not None:
+                        row += "," + cfdi.xml
+                        query = build_query(cfdi.rfcreceptor, cfdi)
+                        sql.commit(query=query)
 
-            else:
-                print(f"La factura {inv['Id']} no cuenta con XML")
-                cfdi.xml = "No tiene XML"
-                cfdi.rfcemisor = "rfcemisor"
-                cfdi.rfcreceptor = "rfcreceptor"
-                cfdi.serie = inv['Id']
-                cfdi.folio = inv['Id']
-                cfdi.fecha = 'fecha'
-                cfdi.uuid = inv['Empresa']
-    
-    set_row_report(row=row)
-    
+                else:
+                    print(f"La factura {inv['Id']} no cuenta con XML")
+                    cfdi.xml = "No tiene XML"
+                    cfdi.rfcemisor = "rfcemisor"
+                    cfdi.rfcreceptor = "rfcreceptor"
+                    cfdi.serie = inv['Id']
+                    cfdi.folio = inv['Id']
+                    cfdi.fecha = 'fecha'
+                    cfdi.uuid = inv['Empresa']
+        
+        set_row_report(row=row)
+        
 
-mailer.send_email('Prueba', '<h1>Test</h1>', attachament='invoicesc.json')
+    mailer.send_email('Notificacion sap - guardata', '<h1>Se completo la exportación</h1>', attachament='report_invoices_guardata.csv')
+except:
+    mailer.send_email('Notificacion sap - guardata | Error', '<h1>Ocurrio un error en la importacion</h1>')
