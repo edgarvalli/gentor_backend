@@ -221,6 +221,11 @@ def build_query(RfcEmpresa:str, cfdi: Cfdi):
     """
     return query
 
+def set_row_report(row=""):
+    with open("report_invoices_guardata.csv","a") as report:
+        report.write(row + "\n")
+        report.close()
+
 ##################################################################################################################
 # Script #
 ##################################################################################################################
@@ -228,8 +233,6 @@ def build_query(RfcEmpresa:str, cfdi: Cfdi):
 jsonfile = open("facturas/invoices.json","r", encoding="utf-8")
 invoices: list = json.load(jsonfile)
 jsonfile.close()
-
-_invoices = []
 
 sql = SqlConnector()
 
@@ -242,6 +245,10 @@ for inv in invoices:
 
     cfdi = Cfdi()
     id = str(inv['Id'])
+    empresa = inv["Empresa"]
+
+    row = f"{empresa},{inv['Id']},{inv['Tipo']}"
+
     if inv["Tipo"] == "customer":
         data = read_invoice_by_id(id)
         data = parse_data_from_sap(data)
@@ -251,6 +258,7 @@ for inv in invoices:
                 cfdi = parse_xml(data)
 
                 if cfdi is not None:
+                    row += "," + cfdi.xml
                     query = build_query(cfdi.rfcemisor, cfdi=cfdi)
                     sql.commit(query=query)
 
@@ -272,6 +280,7 @@ for inv in invoices:
             if "base64String" in data:
                 cfdi: Cfdi = parse_xml(data)
                 if cfdi is not None:
+                    row += "," + cfdi.xml
                     query = build_query(cfdi.rfcreceptor, cfdi)
                     sql.commit(query=query)
 
@@ -285,27 +294,7 @@ for inv in invoices:
                 cfdi.fecha = 'fecha'
                 cfdi.uuid = inv['Empresa']
     
-    reportfile = open("report_invoices_guardata.csv","a")
+    set_row_report(row=row)
     
-    empresa = inv["Empresa"]
-
-    if "," in empresa:
-        empresa = f'"{empresa}"'
-
-    row = f"{empresa},{inv['Id']},{inv['Tipo']}"
-    
-    if cfdi.xml != "":
-        row += f",{cfdi.xml}"
-    
-    reportfile.write(row + "\n")
-    reportfile.close()
-
-    _invoices.append(cfdi.toJSON())
-
-jsondata = json.dumps(_invoices, indent=4)
-
-invoices_resp = open("invoicesc.json","w")
-invoices_resp.write(jsondata)
-invoices_resp.close()
 
 mailer.send_email('Prueba', '<h1>Test</h1>', attachament='invoicesc.json')
