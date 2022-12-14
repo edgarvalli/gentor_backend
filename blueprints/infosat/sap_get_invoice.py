@@ -249,9 +249,10 @@ for inv in invoices:
         if data is not None:
             if "base64String" in data:
                 cfdi = parse_xml(data)
-                print(cfdi.xml)
-                query = build_query(cfdi.rfcemisor, cfdi=cfdi)
-                sql.commit(query=query)
+
+                if cfdi is not None:
+                    query = build_query(cfdi.rfcemisor, cfdi=cfdi)
+                    sql.commit(query=query)
 
             else:
                 print(f"La factura {id} no cuenta con XML")
@@ -270,8 +271,10 @@ for inv in invoices:
         if data is not None:
             if "base64String" in data:
                 cfdi: Cfdi = parse_xml(data)
-                query = build_query(cfdi.rfcreceptor, cfdi)
-                sql.commit(query=query)
+                if cfdi is not None:
+                    query = build_query(cfdi.rfcreceptor, cfdi)
+                    sql.commit(query=query)
+
             else:
                 print(f"La factura {inv['Id']} no cuenta con XML")
                 cfdi.xml = "No tiene XML"
