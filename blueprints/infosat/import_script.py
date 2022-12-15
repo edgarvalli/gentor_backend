@@ -49,6 +49,3 @@ else:
         exit()
     
     p.run(logpath=logpath, startdate=startdate, enddate=enddate, userid=userid, display=False)
-    sapimport = SapImport(startdate=startdate,enddate=enddate)
-    sapimport.run()
-    

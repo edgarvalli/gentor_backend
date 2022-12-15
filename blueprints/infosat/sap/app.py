@@ -161,7 +161,6 @@ class SapImport:
     def get_customer_invoices(self):
         logcontent = ""
         response = sap.get_invoice_by_date(module="customer",startdate=self.startdate, enddate=self.enddate)
-        print(response)
         if response["error"]:
             return response["message"]
             
@@ -203,7 +202,7 @@ class SapImport:
                     self.sql.commit(query=query)
 
 
-                    line = f"[{insertedtime}]: Empresa SAP - {empresaID} // Clientes// "
+                    line = f"[{insertedtime}]: Empresa SAP - {empresaID} // Clientes//{cfdi.uuid} "
                     line += f"UUID - {satuuid} // {msg}"
                     self.monitor.update(self.processid, 2, line)
                     logcontent += line + "\n"
