@@ -55,6 +55,7 @@ class ImportFromContpaqi:
                     cfdi['XML'] = cfdi['XML'].replace("'", "''")
 
                 self.db.key = 'guardata'
+                insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                 if cfdi['UUID'] is None:
                     cfdi['UUID'] = ""
@@ -90,17 +91,18 @@ class ImportFromContpaqi:
                         if r.errorcode == '23000':
                             if display_console:
                                 print(f"El UUID {fuuid} ya existe")
-                            self.log += (f"El UUID {fuuid} ya existe\n")
+                            self.log += (f"")
+                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","El UUID ya existe"\n'
                         else:
                             if display_console:
                                 print(f"[{fuuid}]=={r.get('message')}")
-                            self.log += (f"[{fuuid}]=={r.get('message')}\n")
+                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","{r.get("message")}"\n'
                     else:
                         if display_console:
                             print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n")
                         i = i + 1
-                        # print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}")
-                        self.log += f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n"
+
+                        self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","Factura guardada correctamente"\n'
 
     def run(self, display_console: bool = True, userid: str = None):
         empresas = helpers.empresas()
@@ -126,10 +128,6 @@ class ImportFromContpaqi:
                 print(line)
                 print(f"RFC={rfc}")
                 print('Obteniendos los cfdis')
-
-            self.log += (f"[{self.startdate}] {line}\n")
-            self.log += (f"RFC={rfc}\n")
-            self.log += ('Obteniendos los cfdis\n')
 
             cfdis = {}
 

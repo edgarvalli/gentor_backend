@@ -7,7 +7,7 @@ from contpaqi.import_from_contipaq import ImportFromContpaqi
 
 
 class ImportToInfosat:
-    log: str = ""
+    log: str = "Datetime,Fuente,IdSAP,Rfc,FechaFactura,UUID,Estatus\n"
     monitor: MonitorStatusImport = MonitorStatusImport()
     processid: str = ""
 
@@ -28,9 +28,19 @@ class ImportToInfosat:
             self.monitor.userid = "System User"
         else:
             self.monitor.userid = userid
-            
+        
         process = self.monitor.create("Iniciando proceso")
+
+        self.monitor.update(self.processid,2, "Trabajando con información del SAP")
+        sapimport = SapImport(startdate=startdate, enddate=enddate)
+        sapimport.show = display
+        sapimport.processid = self.processid
+        
+        self.log += sapimport.run()
+            
         self.processid = process.id
+
+        self.monitor.update(self.processid,2, "Trabajando con información del Contpaq")
 
         linkcontpaqi = ImportFromContpaqi()
         linkcontpaqi.processid = self.processid
@@ -40,13 +50,7 @@ class ImportToInfosat:
 
         self.log += linkcontpaqi.run(display_console=display, userid=userid)
 
-        self.monitor.update(self.processid,2, "Trabajando con información del SAP")
-        sapimport = SapImport(startdate=startdate, enddate=enddate)
-        sapimport.processid = self.processid
-        
-        self.log += sapimport.run()
-
-        logfile = os.path.join(logpath,self.processid + ".txt")
+        logfile = os.path.join(logpath,self.processid + ".csv")
 
         f = open(logfile, "w")
         f.write(self.log)

@@ -73,6 +73,7 @@ class SapWS:
             "endDate": enddate
         }
         xml_content = self.render_xml_request(f"sap_invoices_{module}_by_date", data=data)
+
         r = self.fetch(module,xml_content)
         return r
     
