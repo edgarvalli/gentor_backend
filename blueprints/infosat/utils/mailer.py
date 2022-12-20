@@ -8,7 +8,7 @@ from email.mime.multipart import MIMEMultipart
 def send_email(subject='', bodyHtml='', attachament=None):
     sender = "gentor.ti.soporte@gmail.com"
     password = "ceznatsfycavpymo"
-    to = "evalli@gentor.com"
+    to = "evalli@gentor.com,acastillo@gentor.com"
 
     message = MIMEMultipart('Backup')
     message['Subject'] = subject
@@ -39,5 +39,4 @@ def send_email(subject='', bodyHtml='', attachament=None):
     server.starttls()
     server.login(sender, password)
     server.sendmail(sender, to, message.as_string())
-    print(server.ehlo_msg)
     server.quit()

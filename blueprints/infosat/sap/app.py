@@ -30,7 +30,7 @@ class SapImport:
         _enddate = datetime.now()
 
         if startdate is None:
-            self.startdate = (_enddate - timedelta(days=60)).strftime("%Y-%m-%d")
+            self.startdate = (_enddate - timedelta(days=40)).strftime("%Y-%m-%d")
         else:
             self.startdate = startdate
         
@@ -160,9 +160,9 @@ class SapImport:
             
         else:
             customer_invoices = response["soap-env:Envelope"]["soap-env:Body"]
-            customer_invoices = customer_invoices["n0:Z_CustInvoiceQueryByElementsSimpleByConfirmation_sync"]
-            if "Z_CustInvoice" in customer_invoices:
-                customer_invoices = customer_invoices["Z_CustInvoice"]
+            customer_invoices = customer_invoices["n0:CustomerInvoiceByElementsResponse_sync"]
+            if "CustomerInvoice" in customer_invoices:
+                customer_invoices = customer_invoices["CustomerInvoice"]
                 if type(customer_invoices) == dict:
                     customer_invoices = [customer_invoices]
             else:
@@ -227,9 +227,9 @@ class SapImport:
             return response["message"]
         else:
             invoices = response["soap-env:Envelope"]["soap-env:Body"]
-            invoices = invoices["n0:Z_SuppInvoiceQueryByElementsSimpleByConfirmation_sync"]
-            if "Z_SuppInvoice" in invoices:
-                invoices = invoices["Z_SuppInvoice"]
+            invoices = invoices["n0:SupplierInvoiceSimpleByElementsResponseMBF_sync"]
+            if "SupplierInvoice" in invoices:
+                invoices = invoices["SupplierInvoice"]
                 if type(invoices) == dict:
                     invoices = [invoices]
             else:

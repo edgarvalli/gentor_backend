@@ -1,24 +1,37 @@
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
     <soapenv:Header />
     <soapenv:Body>
-        <glob:Z_SuppInvoiceQueryByElementsSimpleByRequest_sync>
-            <Z_SuppInvoiceSimpleSelectionBy>
-                <SelectionByfacturaFecha>
+        <glob:SupplierInvoiceSimpleByElementsQueryMBF_sync>
+            <SupplierInvoiceSimpleSelectionByElements>
+                
+                <!--Zero or more repetitions:-->
+
+                <!-- <SelectionByDate>
+                    <InclusionExclusionCode>I</InclusionExclusionCode>
+                    <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
+                    <LowerBoundaryDate>{{startdate}}</LowerBoundaryDate>
+                    <UpperBoundaryDate>{{enddate}}</UpperBoundaryDate>
+                </SelectionByDate> -->
+
+                <SelectionByTransactionDate>
                     <!--Optional:-->
                     <InclusionExclusionCode>I</InclusionExclusionCode>
                     <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
                     <!--Optional:-->
-                    <LowerBoundaryfacturaFecha>{{startDate}}</LowerBoundaryfacturaFecha>
+                    <LowerBoundaryTransactionDate>{{startdate}}</LowerBoundaryTransactionDate>
                     <!--Optional:-->
-                    <UpperBoundaryfacturaFecha>{{endDate}}</UpperBoundaryfacturaFecha>
-                </SelectionByfacturaFecha>
-            </Z_SuppInvoiceSimpleSelectionBy>
+                    <UpperBoundaryTransactionDate>{{enddate}}</UpperBoundaryTransactionDate>
+                 </SelectionByTransactionDate>
+
+                
+            </SupplierInvoiceSimpleSelectionByElements>
             <ProcessingConditions>
-                <!--Optional:-->
-                <QueryHitsMaximumNumberValue>10000</QueryHitsMaximumNumberValue>
-                <QueryHitsUnlimitedIndicator>false</QueryHitsUnlimitedIndicator>
-                <!--Optional:-->
+            <!--Optional:-->
+            <QueryHitsMaximumNumberValue>10000</QueryHitsMaximumNumberValue>
+            <QueryHitsUnlimitedIndicator>false</QueryHitsUnlimitedIndicator>
+            <!--Optional:-->
+            <LastReturnedObjectID schemeID="?" schemeVersionID="?" schemeAgencyID="?" schemeAgencySchemeID="?" schemeAgencySchemeAgencyID="?">?</LastReturnedObjectID>
             </ProcessingConditions>
-        </glob:Z_SuppInvoiceQueryByElementsSimpleByRequest_sync>
+        </glob:SupplierInvoiceSimpleByElementsQueryMBF_sync>
     </soapenv:Body>
 </soapenv:Envelope>

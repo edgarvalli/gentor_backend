@@ -238,7 +238,7 @@ try:
     sql = SqlConnector()
 
     reportfile = open("report_invoices_guardata.csv","w")
-    reportfile.write("Empresa,Id,Tipo,XML\n")
+    reportfile.write("Empresa,Id,Tipo,UUID,XML\n")
     reportfile.close()
 
     for inv in invoices:
@@ -248,7 +248,7 @@ try:
         id = str(inv['Id'])
         empresa = inv["Empresa"]
 
-        row = f"{empresa},{inv['Id']},{inv['Tipo']}"
+        row = f'"{empresa}","{inv["Id"]}","{inv["Tipo"]}"'
 
         if inv["Tipo"] == "customer":
             data = read_invoice_by_id(id)
@@ -259,19 +259,14 @@ try:
                     cfdi = parse_xml(data)
 
                     if cfdi is not None:
-                        row += "," + cfdi.xml
+                        row += f'"{cfdi.uuid}","{cfdi.xml}"'
                         query = build_query(cfdi.rfcemisor, cfdi=cfdi)
-                        sql.commit(query=query)
+                        r = sql.commit(query=query)
+                        if r.error:
+                            print(r.message)
 
                 else:
                     print(f"La factura {id} no cuenta con XML")
-                    cfdi.xml = "No tiene XML"
-                    cfdi.rfcemisor = "rfcemisor"
-                    cfdi.rfcreceptor = "rfcreceptor"
-                    cfdi.serie = inv['Id']
-                    cfdi.folio = inv['Id']
-                    cfdi.fecha = 'fecha'
-                    cfdi.uuid = inv['Empresa']
         else:
 
             data = read_invoice_supplier_by_id(id)
@@ -281,19 +276,14 @@ try:
                 if "base64String" in data:
                     cfdi: Cfdi = parse_xml(data)
                     if cfdi is not None:
-                        row += "," + cfdi.xml
+                        row += f'"{cfdi.uuid}","{cfdi.xml}"'
                         query = build_query(cfdi.rfcreceptor, cfdi)
-                        sql.commit(query=query)
+                        r = sql.commit(query=query)
+                        if r.error:
+                            print(r.message)
 
                 else:
                     print(f"La factura {inv['Id']} no cuenta con XML")
-                    cfdi.xml = "No tiene XML"
-                    cfdi.rfcemisor = "rfcemisor"
-                    cfdi.rfcreceptor = "rfcreceptor"
-                    cfdi.serie = inv['Id']
-                    cfdi.folio = inv['Id']
-                    cfdi.fecha = 'fecha'
-                    cfdi.uuid = inv['Empresa']
         
         set_row_report(row=row)
         

@@ -10,11 +10,11 @@ class SapWS:
     endpoint: dict = {
         "customer": {
             "dev": "https://my351064.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_custinvoice?sap-vhost=my351064.sapbydesign.com",
-            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_custinvoice?sap-vhost=my353505.sapbydesign.com"
+            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/querycustomerinvoicein"
         },
         "supplier": {
             "dev": "https://my351064.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my351064.sapbydesign.com",
-            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my353505.sapbydesign.com"
+            "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/querysupplierinvoicequeryin"
         }
     }
 
