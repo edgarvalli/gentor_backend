@@ -288,6 +288,8 @@ class SapImport:
         self.monitor.update(self.processid, 2, "Obteniendo datos de factura de clientes")
         logs = self.get_customer_invoices()
 
+        print(logs)
+
         self.monitor.update(self.processid, 2, "Obteniendo datos de factura de proveedores")
         logs += self.get_supplier_invoices()
 

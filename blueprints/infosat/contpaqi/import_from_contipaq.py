@@ -92,17 +92,17 @@ class ImportFromContpaqi:
                             if display_console:
                                 print(f"El UUID {fuuid} ya existe")
                             self.log += (f"")
-                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","El UUID ya existe"\n'
+                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","","El UUID ya existe"\n'
                         else:
                             if display_console:
                                 print(f"[{fuuid}]=={r.get('message')}")
-                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","{r.get("message")}"\n'
+                            self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","","{r.get("message")}"\n'
                     else:
                         if display_console:
                             print(f"[{cfdi.get('Fecha','NoFecha')}]:{cfdi['RFC']} ha guardado el uuid {fuuid}\n")
                         i = i + 1
 
-                        self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","Factura guardada correctamente"\n'
+                        self.log += f'"{insertedtime}","Contpaqi","{cfdi["RFC"]}","{cfdi["Fecha"]}","{fuuid}","","Factura guardada correctamente"\n'
 
     def run(self, display_console: bool = True, userid: str = None):
         empresas = helpers.empresas()

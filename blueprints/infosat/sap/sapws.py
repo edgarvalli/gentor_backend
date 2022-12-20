@@ -69,8 +69,8 @@ class SapWS:
 
     def get_invoice_by_date(self, module: str = "customer", startdate: str ="", enddate: str =""):
         data = {
-            "startDate": startdate,
-            "endDate": enddate
+            "startdate": startdate,
+            "enddate": enddate
         }
         xml_content = self.render_xml_request(f"sap_invoices_{module}_by_date", data=data)
 
