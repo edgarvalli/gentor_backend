@@ -198,7 +198,7 @@ class SapImport:
                 uuid = ""
 
                 if cfdi is not None:
-                    
+
                     rfcemisor = cfdi.rfcemisor
                     query = self.build_query(RfcEmpresa=rfcemisor, cfdi=cfdi)
                     #Continuar aqui para insertar en base de datos
@@ -216,7 +216,7 @@ class SapImport:
                     uuid = cfdi.uuid
 
                 else:
-                    msg = f"[{insertedtime}]: {inv['facturaID']} // {inv['empresaID']} // No tiene XML - no se guardo CFDI"
+                    msg = f"[{insertedtime}]: {idsap} // {empresaID} // No tiene XML - no se guardo CFDI"
                     self.monitor.update(self.processid, 2, msg)
                     status = "La factura de cliente no cuenta con XML y no se guardo"
                 
@@ -267,7 +267,7 @@ class SapImport:
                 status = ""
 
                 if cfdi is None:
-                    msg = f"[{insertedtime}]: {inv['facturaID']} // {inv['empresaID']} // No tiene XML - no se guardo CFDI"
+                    msg = f"[{insertedtime}]: {idsap} // {empresaID} // No tiene XML - no se guardo CFDI"
                     self.monitor.update(self.processid, 2, msg)
                     status = "La factura de proveedor no cuenta con XML y no se guardo"
                 
