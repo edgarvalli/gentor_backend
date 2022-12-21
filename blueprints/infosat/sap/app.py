@@ -214,13 +214,13 @@ class SapImport:
                     self.monitor.update(self.processid, 2, line)
                     status = "Se guardo la factura de cliente correctamente"
                     uuid = cfdi.uuid
+                    facturaFecha = cfdi.fecha
 
                 else:
                     msg = f"[{insertedtime}]: {idsap} // {empresaID} // No tiene XML - no se guardo CFDI"
                     self.monitor.update(self.processid, 2, msg)
                     status = "La factura de cliente no cuenta con XML y no se guardo"
                 
-                facturaFecha = cfdi.fecha
 
                 logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcemisor}","{facturaFecha}","{uuid}","{status}"\n'
                 
