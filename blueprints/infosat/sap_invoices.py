@@ -3,7 +3,7 @@ from requests.auth import HTTPBasicAuth
 from requests import Response
 
 f = open('sap/request_xml/sap_invoices_customer_by_date.xml','r')
-xml = f.read().replace("{{startdate}}","2022-12-07")
+xml = f.read().replace("{{startdate}}","2022-12-08")
 xml = xml.replace("{{enddate}}","2022-12-08")
 
 f.close()
@@ -30,6 +30,21 @@ if data.reason != "OK":
 jsondata = jsondata["soap-env:Envelope"]["soap-env:Body"]
 jsondata: list[dict] = jsondata["n0:CustomerInvoiceByElementsResponse_sync"]["CustomerInvoice"]
 
+# with open("response.json","w") as f:
+#     f.write(json.dumps(jsondata))
+#     f.close()
+
+xml = open("sap/request_xml/sap_invoices_customer_read_by_id.xml","r")
+xml = xml.read()
+
+xml = ""
+
 for inv in jsondata:
-    print(inv["ID"] + "---" + inv["Date"])
+    id = inv["ID"]
+    with open("sap/request_xml/sap_invoices_customer_read_by_id.xml","r") as f:
+        xml = f.read().replace("{{invoiceID}}", id)
+        f.close
+    
+    r = fetch(xml=xml)
+    print(r.content)
 

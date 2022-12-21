@@ -15,6 +15,10 @@ class SapWS:
         "supplier": {
             "dev": "https://my351064.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice?sap-vhost=my351064.sapbydesign.com",
             "prod": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/querysupplierinvoicequeryin"
+        },
+        "read": {
+            "customer": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_custinvoice",
+            "supplier": "https://my353505.sapbydesign.com/sap/bc/srt/scs/sap/yya1619h3y_z_suppinvoice"
         }
     }
 
@@ -40,12 +44,15 @@ class SapWS:
                 xml_content = xml_content.replace("{{" + key + "}}", data[key])
         return xml_content
 
-    def fetch(self, module: str, body: str):
+    def fetch(self, module: str, body: str, read: bool = False):
         headers = {
             "Content-Type": "text/xml; charset=utf-8"
         }
         base_auth: HTTPBasicAuth = HTTPBasicAuth(username=self.username, password=self.password)
-        r = requests.post(self.endpoint[module][self.mode],data=body, headers=headers, auth=base_auth)
+        if read:
+            r = requests.post(self.endpoint["read"][module],data=body, headers=headers, auth=base_auth)
+        else:
+            r = requests.post(self.endpoint[module][self.mode],data=body, headers=headers, auth=base_auth)
 
         if r.status_code == 200:
             try:
@@ -79,6 +86,6 @@ class SapWS:
     
     def read_invoice_by_id(self, module:str = "customer", invoiceID:str = ""):
         xml_content = self.render_xml_request(f"sap_invoices_{module}_read_by_id", data={"invoiceID": invoiceID})
-        r = self.fetch(module=module, body=xml_content)
+        r = self.fetch(module=module, body=xml_content, read=True)
         return r
 

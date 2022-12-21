@@ -155,6 +155,7 @@ class SapImport:
     def get_customer_invoices(self):
         logcontent = ""
         response = sap.get_invoice_by_date(module="customer",startdate=self.startdate, enddate=self.enddate)
+
         if response["error"]:
             return response["message"]
             
@@ -175,17 +176,19 @@ class SapImport:
 
             for i,inv in enumerate(customer_invoices):
                 
-                idsap = inv["facturaID"]
-                satuuid = inv["SAP_UUID"]
-                empresaID = inv["empresaID"]
-                facturaFecha = inv["facturaFecha"]
-                rfcemisor = inv.get("rfcEmisor","")
+                idsap = inv["ID"]
+                xml = sap.read_invoice_by_id("customer", idsap)
+                
+                satuuid = xml.get("uuid","")
+                empresaID = xml.get("empresaID","")
+                facturaFecha = xml.get("facturaFecha","")
+                rfcemisor = empresaID
 
                 if self.show:
                     print(f"Trabajando en {i + 1} de {total_invoice} // Clientes // {empresaID} // {satuuid} // {facturaFecha} // ({idsap})", end="\r")
-                
+    
                 # print(f"Clientes // {empresaID} // {satuuid} // {facturaFecha} // ({serie})")
-                xml = sap.read_invoice_by_id("customer", idsap)
+
                 cfdi = self.get_xml_from_customer_invoice(xml)
 
                 msg = ""
@@ -209,12 +212,15 @@ class SapImport:
                     self.monitor.update(self.processid, 2, line)
                     status = "Se guardo la factura de cliente correctamente"
                     uuid = cfdi.uuid
+                    rfcemisor = cfdi.rfcemisor
 
                 else:
                     msg = f"[{insertedtime}]: {inv['facturaID']} // {inv['empresaID']} // No tiene XML - no se guardo CFDI"
                     self.monitor.update(self.processid, 2, msg)
                     status = "La factura de cliente no cuenta con XML y no se guardo"
                 
+                facturaFecha = cfdi.fecha
+
                 logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcemisor}","{facturaFecha}","{uuid}","{status}"\n'
                 
 
@@ -241,16 +247,17 @@ class SapImport:
 
             for i,inv in enumerate(invoices):
                 
-                satuuid = inv["SAP_UUID"]
-                idsap = inv.get("facturaID","")
-                empresaID = inv["empresaID"]
-                facturaFecha = inv["facturaFecha"]
-                rfcreceptor = inv.get("rfcReceptor","")
+                idsap = inv.get("ID","")
+                xml = sap.read_invoice_by_id(module="supplier", invoiceID=idsap)
+
+                satuuid = xml.get("uuid","")
+                empresaID = xml.get("empresaID","")
+                facturaFecha = xml.get("facturaFecha","")
+                rfcreceptor = empresaID
 
                 if self.show:
                     print(f"Trabajando en {i + 1} de {total_invoice} // {empresaID} // Proveedores // {satuuid} // {facturaFecha} // ({idsap})", end="\r")
                 
-                xml = sap.read_invoice_by_id(module="supplier", invoiceID=idsap)
                 cfdi: Cfdi = self.get_xml_from_supplier_invoice(xml)
 
                 msg = ""
@@ -265,6 +272,7 @@ class SapImport:
                 
                 else:
                     uuid = cfdi.uuid
+                    rfcreceptor = cfdi.rfcreceptor
                     query = self.build_query(RfcEmpresa=rfcreceptor, cfdi=cfdi)
                     #Continuar aqui para insertar en base de datos
 
@@ -287,8 +295,6 @@ class SapImport:
     def run(self):
         self.monitor.update(self.processid, 2, "Obteniendo datos de factura de clientes")
         logs = self.get_customer_invoices()
-
-        print(logs)
 
         self.monitor.update(self.processid, 2, "Obteniendo datos de factura de proveedores")
         logs += self.get_supplier_invoices()
