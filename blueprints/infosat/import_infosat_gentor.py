@@ -7,7 +7,7 @@ from contpaqi.import_from_contipaq import ImportFromContpaqi
 
 
 class ImportToInfosat:
-    log: str = "Datetime,Fuente,IdSAP,Rfc,FechaFactura,UUID,Estatus\n"
+    log: str = "Datetime,Fuente,IdSAP,Rfc,FechaFactura,FechaContabilizacion,UUID,Estatus,XML\n"
     monitor: MonitorStatusImport = MonitorStatusImport()
     processid: str = ""
 

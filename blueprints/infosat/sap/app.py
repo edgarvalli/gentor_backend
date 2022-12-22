@@ -78,10 +78,10 @@ class SapImport:
             else:
                 xml = ""
 
-            rfcemisor = re.findall(r'cfdi:Emisor Rfc="(.*?)"', xml)
+            rfcemisor = re.findall(r'<cfdi:Emisor[\sa-zA-Z0-9=",.]*Rfc="(.*?)"', xml)
             rfcemisor = self.parse_value_xml(rfcemisor)
 
-            rfcreceptor = re.findall(r'cfdi:Receptor Rfc="(.*?)"', xml)
+            rfcreceptor = re.findall(r'<cfdi:Receptor[\sa-zA-Z0-9=",.]*Rfc="(.*?)"', xml)
             rfcreceptor = self.parse_value_xml(rfcreceptor)
 
             serie = re.findall(r'Serie="(.*?)"', xml)
@@ -182,6 +182,7 @@ class SapImport:
                 satuuid = xml.get("uuid","")
                 empresaID = xml.get("empresaID","")
                 facturaFecha = xml.get("facturaFecha","")
+                contabilizacionFecha = xml.get("contabilizacionFecha","")
                 rfcemisor = empresaID
 
                 if self.show:
@@ -190,6 +191,7 @@ class SapImport:
                 # print(f"Clientes // {empresaID} // {satuuid} // {facturaFecha} // ({serie})")
 
                 cfdi = self.get_xml_from_customer_invoice(xml)
+                xmlfile = ""
 
                 msg = ""
                 insertedtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -215,6 +217,7 @@ class SapImport:
                     status = "Se guardo la factura de cliente correctamente"
                     uuid = cfdi.uuid
                     facturaFecha = cfdi.fecha
+                    xmlfile =cfdi.xml
 
                 else:
                     msg = f"[{insertedtime}]: {idsap} // {empresaID} // No tiene XML - no se guardo CFDI"
@@ -222,7 +225,7 @@ class SapImport:
                     status = "La factura de cliente no cuenta con XML y no se guardo"
                 
 
-                logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcemisor}","{facturaFecha}","{uuid}","{status}"\n'
+                logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcemisor}","{facturaFecha}","{contabilizacionFecha}","{uuid}","{status}","{xmlfile}"\n'
                 
 
             return logcontent
@@ -254,7 +257,9 @@ class SapImport:
                 satuuid = xml.get("uuid","")
                 empresaID = xml.get("empresaID","")
                 facturaFecha = xml.get("facturaFecha","")
+                contabilizacionFecha = xml.get("contabilizacionFecha","")
                 rfcreceptor = empresaID
+                xmlfile = ""
 
                 if self.show:
                     print(f"Trabajando en {i + 1} de {total_invoice} // {empresaID} // Proveedores // {satuuid} // {facturaFecha} // ({idsap})", end="\r")
@@ -288,8 +293,9 @@ class SapImport:
 
                     self.monitor.update(self.processid, 2, line)
                     status = "La factura de proveedor no cuenta con XML y no se guardo"
+                    xmlfile = cfdi.xml
                 
-                logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcreceptor}","{facturaFecha}","{uuid}","{status}"\n'
+                logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcreceptor}","{facturaFecha}","{contabilizacionFecha}","{uuid}","{status}","{xmlfile}"\n'
 
             return logcontent
 
