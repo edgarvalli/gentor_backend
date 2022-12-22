@@ -263,7 +263,7 @@ try:
     for inv in invoices:
 
         cfdi = Cfdi()
-        id = inv['Id']
+        id = str(inv['Id'])
         tipo = inv["Tipo"]
         empresa = inv["Empresa"]
         status = "No tiene datos"
