@@ -322,7 +322,6 @@ try:
                 row = f'"{empresa}","{fecha}","{fechacontable}","{rfc}","{id}","{tipo}","","{status}","No tiene XML en SAP"'
         else:
 
-            rfc = inv["rfcReceptor"]
             data = read_invoice_supplier_by_id(id)
             data = parse_data_supplier_from_sap(data)
 
