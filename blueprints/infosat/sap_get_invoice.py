@@ -325,7 +325,7 @@ try:
             data = read_invoice_supplier_by_id(id)
             data = parse_data_supplier_from_sap(data)
 
-            rfc = "rfcEmisor"
+            rfc = "rfcReceptor"
             fecha = "facturaFecha"
             fechacontable= "contabilizacionFecha"
 
@@ -334,11 +334,11 @@ try:
 
                     cfdi: Cfdi = parse_xml(data)
 
-                    rfc = data["rfcEmisor"]
                     fecha = data["facturaFecha"]
                     fechacontable= data["contabilizacionFecha"]
 
                     if cfdi is not None:
+                        rfc = cfdi.rfcreceptor
                         row += f'"{cfdi.uuid}","{cfdi.xml}"'
                         query = build_query(cfdi.rfcreceptor, cfdi)
                         r = sql.commit(query=query)
