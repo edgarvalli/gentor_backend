@@ -161,9 +161,9 @@ class SapImport:
             
         else:
             customer_invoices = response["soap-env:Envelope"]["soap-env:Body"]
-            customer_invoices = customer_invoices["n0:CustomerInvoiceByElementsResponse_sync"]
-            if "CustomerInvoice" in customer_invoices:
-                customer_invoices = customer_invoices["CustomerInvoice"]
+            customer_invoices = customer_invoices["n0:Z_CustInvoiceQueryByElementsSimpleByConfirmation_sync"]
+            if "Z_CustInvoice" in customer_invoices:
+                customer_invoices = customer_invoices["Z_CustInvoice"]
                 if type(customer_invoices) == dict:
                     customer_invoices = [customer_invoices]
             else:
@@ -176,19 +176,14 @@ class SapImport:
 
             for i,inv in enumerate(customer_invoices):
                 
-                idsap = inv["ID"]
+                idsap = inv["facturaID"]
                 xml = sap.read_invoice_by_id("customer", idsap)
                 
-                satuuid = xml.get("uuid","")
-                empresaID = xml.get("empresaID","")
-                facturaFecha = xml.get("facturaFecha","")
-                contabilizacionFecha = xml.get("contabilizacionFecha","")
-                rfcemisor = empresaID
-
-                if self.show:
-                    print(f"Trabajando en {i + 1} de {total_invoice} // Clientes // {empresaID} // {satuuid} // {facturaFecha} // ({idsap})", end="\r")
-    
-                # print(f"Clientes // {empresaID} // {satuuid} // {facturaFecha} // ({serie})")
+                satuuid = xml.get("uuid",inv.get("uuid",""))
+                empresaID = inv.get("empresaID","")
+                facturaFecha = inv.get("facturaFecha","")
+                contabilizacionFecha = inv.get("contabilizacionFecha","")
+                rfcemisor = inv.get("rfcEmisor",empresaID)
 
                 cfdi = self.get_xml_from_customer_invoice(xml)
                 xmlfile = ""
@@ -224,6 +219,9 @@ class SapImport:
                     self.monitor.update(self.processid, 2, msg)
                     status = "La factura de cliente no cuenta con XML y no se guardo"
                 
+                if self.show:
+                    print(f"Trabajando en {i + 1} de {total_invoice} // Clientes // {empresaID} // {satuuid} // {facturaFecha} // {idsap} // {status}", end="\r")
+                
 
                 logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcemisor}","{facturaFecha}","{contabilizacionFecha}","{uuid}","{status}","{xmlfile}"\n'
                 
@@ -237,9 +235,9 @@ class SapImport:
             return response["message"]
         else:
             invoices = response["soap-env:Envelope"]["soap-env:Body"]
-            invoices = invoices["n0:SupplierInvoiceSimpleByElementsResponseMBF_sync"]
-            if "SupplierInvoice" in invoices:
-                invoices = invoices["SupplierInvoice"]
+            invoices = invoices["n0:Z_SuppInvoiceQueryByElementsSimpleByConfirmation_sync"]
+            if "Z_SuppInvoice" in invoices:
+                invoices = invoices["Z_SuppInvoice"]
                 if type(invoices) == dict:
                     invoices = [invoices]
             else:
@@ -251,18 +249,15 @@ class SapImport:
 
             for i,inv in enumerate(invoices):
                 
-                idsap = inv.get("ID","")
+                idsap = inv.get("facturaID","")
                 xml = sap.read_invoice_by_id(module="supplier", invoiceID=idsap)
 
-                satuuid = xml.get("uuid","")
-                empresaID = xml.get("empresaID","")
-                facturaFecha = xml.get("facturaFecha","")
-                contabilizacionFecha = xml.get("contabilizacionFecha","")
-                rfcreceptor = empresaID
+                satuuid = xml.get("uuid",inv.get("uuid",""))
+                empresaID = inv.get("empresaID","")
+                facturaFecha = inv.get("facturaFecha","")
+                contabilizacionFecha = inv.get("contabilizacionFecha","")
+                rfcreceptor = inv.get("rfcReceptor", empresaID)
                 xmlfile = ""
-
-                if self.show:
-                    print(f"Trabajando en {i + 1} de {total_invoice} // {empresaID} // Proveedores // {satuuid} // {facturaFecha} // ({idsap})", end="\r")
                 
                 cfdi: Cfdi = self.get_xml_from_supplier_invoice(xml)
 
@@ -295,6 +290,8 @@ class SapImport:
                     status = "La factura de proveedor no cuenta con XML y no se guardo"
                     xmlfile = cfdi.xml
                 
+                if self.show:
+                    print(f"Trabajando en {i + 1} de {total_invoice} // {empresaID} // Proveedores // {satuuid} // {facturaFecha} // {idsap} // {status}", end="\r")
                 logcontent += f'"{insertedtime}","SAP","{idsap}","{rfcreceptor}","{facturaFecha}","{contabilizacionFecha}","{uuid}","{status}","{xmlfile}"\n'
 
             return logcontent

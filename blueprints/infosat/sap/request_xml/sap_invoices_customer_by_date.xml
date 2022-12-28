@@ -1,22 +1,19 @@
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-   xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:glob="http://sap.com/xi/SAPGlobal20/Global">
    <soapenv:Header/>
    <soapenv:Body>
-      <glob:CustomerInvoiceByElementsQuery_sync>
-         <CustomerInvoiceSelectionByElements>
-            <SelectionByDate>
+      <glob:Z_CustInvoiceQueryByElementsSimpleByRequest_sync>
+         <Z_CustInvoiceSimpleSelectionBy>
+            <!--Zero or more repetitions:-->
+            <SelectionByfacturaFecha>
                <!--Optional:-->
                <InclusionExclusionCode>I</InclusionExclusionCode>
-               <!--Optional:-->
                <IntervalBoundaryTypeCode>3</IntervalBoundaryTypeCode>
                <!--Optional:-->
-               <LowerBoundaryCustomerInvoiceDate>{{startdate}}</LowerBoundaryCustomerInvoiceDate>
+               <LowerBoundaryfacturaFecha>{{startdate}}</LowerBoundaryfacturaFecha>
                <!--Optional:-->
-               <UpperBoundaryCustomerInvoiceDate>{{enddate}}</UpperBoundaryCustomerInvoiceDate>
-            </SelectionByDate>
-
-         </CustomerInvoiceSelectionByElements>
-
+               <UpperBoundaryfacturaFecha>{{enddate}}</UpperBoundaryfacturaFecha>
+            </SelectionByfacturaFecha>
+         </Z_CustInvoiceSimpleSelectionBy>
          <ProcessingConditions>
             <!--Optional:-->
             <QueryHitsMaximumNumberValue>10000</QueryHitsMaximumNumberValue>
@@ -24,7 +21,6 @@
             <!--Optional:-->
             <LastReturnedObjectID schemeID="?" schemeVersionID="?" schemeAgencyID="?" schemeAgencySchemeID="?" schemeAgencySchemeAgencyID="?">?</LastReturnedObjectID>
          </ProcessingConditions>
-         
-      </glob:CustomerInvoiceByElementsQuery_sync>
+      </glob:Z_CustInvoiceQueryByElementsSimpleByRequest_sync>
    </soapenv:Body>
 </soapenv:Envelope>
