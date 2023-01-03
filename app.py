@@ -11,6 +11,7 @@ from blueprints.healthcheck import healthcheck
 from blueprints.healthcheck.api import healthcheck_api
 from blueprints.aad import aad
 from blueprints.infosat.api import infosatapi
+from blueprints.wallpapers import wallpaperapi
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 app.config.from_object(app_config)
@@ -23,6 +24,7 @@ working_path = pathlib.Path(__file__).parent
 app.register_blueprint(healthcheck,root_path = app.root_path)
 app.register_blueprint(healthcheck_api,root_path = app.root_path)
 app.register_blueprint(infosatapi)
+app.register_blueprint(wallpaperapi)
 app.register_blueprint(aad)
 
 
