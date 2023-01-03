@@ -1,5 +1,5 @@
 from flask import Blueprint, request, send_file
-from os import path
+from os import path, getcwd
 
 wallpaperapi = Blueprint("wallpaper",__name__, url_prefix='/wallpaper')
 
@@ -9,14 +9,11 @@ secret = "Gmp(FVjwyC?X(ogxj5C;SV+!S;ZqgE?IHUB4VGDw"
 def wIndex():
     return 'Hello World'
 
-
 @wallpaperapi.route('/bg')
 def bg():
 
     exts = ['jpg','png','jpeg']
-    img = ''
-
-    
+    print(img)    
     token = request.headers.get("token",None)
 
     if token is None:
@@ -25,8 +22,7 @@ def bg():
     else:
 
         for ext in exts:
-            
-            img = f'static\\img\\wallpapers\\bg.{ext}'
+            img = path.join(getcwd(),"static", "img","wallpapers", f"bg.{ext}")
             if path.exists(img):
                 break
     
@@ -48,8 +44,7 @@ def ls():
     else:
 
         for ext in exts:
-            
-            img = f'static\\img\\wallpapers\\ls.{ext}'
+            img = path.join(getcwd(),"static", "img","wallpapers", f"ls.{ext}")
             if path.exists(img):
                 break
     
