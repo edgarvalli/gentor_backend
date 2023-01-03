@@ -13,7 +13,7 @@ def wIndex():
 def bg():
 
     exts = ['jpg','png','jpeg']
-    print(img)    
+    img = '' 
     token = request.headers.get("token",None)
 
     if token is None:
@@ -27,7 +27,7 @@ def bg():
                 break
     
 
-    return send_file(img)
+        return send_file(img)
 
 @wallpaperapi.route('/ls')
 def ls():
@@ -49,4 +49,4 @@ def ls():
                 break
     
 
-    return send_file(img)
+        return send_file(img)
