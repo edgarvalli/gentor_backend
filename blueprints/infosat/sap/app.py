@@ -287,7 +287,7 @@ class SapImport:
                     line += f"UUID - {satuuid} // {msg}"
 
                     self.monitor.update(self.processid, 2, line)
-                    status = "La factura de proveedor no cuenta con XML y no se guardo"
+                    status = "Se guardo la factura de proveedor correctamente"
                     xmlfile = cfdi.xml
                 
                 if self.show:
